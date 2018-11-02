@@ -1,0 +1,8 @@
+# #########################
+# .gitigore file for WPC.
+# #########################
+#
+# Add here .gitignore rules.
+
+*~
+*.swp
