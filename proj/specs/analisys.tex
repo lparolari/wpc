@@ -1,0 +1,69 @@
+%%%%%%%%%%%%%%%%%%
+% Analisys
+\section{Analisys}
+This chapter will report the result of the project analisys, and its requirements.
+
+\subsection{Requirements}
+The system will be developed as a library written in Python (for educational purposes) with a minimal CLI\footnote{Command Line Interface}. The system will need a dababase, in this context SQLite will be chosen (for educational purposes again), however a strategy to make db engine interchangable could be adopted in later versions (see \ref{subsec:enhancements}).
+
+The system should allow the user to:
+\begin{enumerate}[label=(\alph*)]
+\item Setup system variables, even if default values are setted. (see \textit{\ref{subsec:configuration}});
+\item Manage clients;
+\item Enter a new line of work with following data: 
+\begin{enumerate}[label=\arabic*)]
+\item Date of work;
+\item Start and end time of work, or directly number of hours done;
+\item Boolean production value: true if the work can be marked as production, false otherwise;
+\item The kilometers done to reach the work place (if any);
+\item An add value, if any extra outgoings;
+\item Some notes, to mark down any noticeable data or to specify what the add value stands for;
+\item A description of work done;
+\end{enumerate}
+\item Mark some dates as paid;
+\item Allow registering forfait payments, that should be removed from the next bill;
+\item Show some statistics:
+\begin{enumerate}[label=\arabic*)]
+\item Total hours done;
+\item Total non-production hours done;
+\item Total production hours done;
+\item Total kilometers done;
+\item Total add;
+\end{enumerate}
+This should be allowed for each paid "session", including not paid data as default.
+\item Financial report:
+\begin{enumerate}[label=\arabic*)]
+\item Total hours profit;
+\item Total non-taxable hours profit;
+\item Total taxable hours profit;
+\item Total kilometers cost;
+\item Total add cost;
+\item Total profit;
+\item Total profit with fiscal elaboration (IVA, gross and net to pay). 
+\end{enumerate}
+Also this should be available for each paid "session", including not paid data as default.
+\end{enumerate}
+
+\subsection{Configuration}
+\label{subsec:configuration}
+The system needs some static parameters that can change in the future. The a configuration manager is needed to handle this requirement.
+
+Configuration to handle are:
+\begin{enumerate}[label=(\alph*)]
+\item euro/hour value, i.e. how much an hour of work cost for the customer. For now, every hour has the same cost, but in future could be implemented a way to make some hours with a price and some other with other price;
+\item kilometers/litre, in order to calculate how miny litres of gas are needed base on km done;
+\item litre/euro, in order to calculate a possible value to expose as a cost (will be approximate);
+\item IVA, the italian fistal number for taxes.
+\end{enumerate}
+
+
+\subsection{Enhancements}
+\label{subsec:enhancements}
+Here will be listed all programmate or desiderable changes to the project.
+
+Programmed enhancements: \textit{none} for now.
+To consider: 
+\begin{enumerate}[label=(\alph*)]
+\item Multiple database engine support;
+\item Different hour cost based on work;
+\end{enumerate}
