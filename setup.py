@@ -33,7 +33,8 @@ setup(
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
     ],
-    description="WPC is a light-weight, highly configurable and easy to use library with a minimal CLI, with the objective of manage your work (hours and costs) and emit invoices.",
+    description="WPC is a light-weight, highly configurable and easy to use library with a minimal CLI, with the "
+                "objective of manage your work (hours and costs) and emit invoices.",
     entry_points={
         'console_scripts': [
             'wpc=wpc.cli:main',
