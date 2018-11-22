@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
 
-"""Console script for wpc."""
 import sys
 import click
+from datetime import date
+from cli import cli
 
 
-@click.command()
-def main(args=None):
-    """Console script for wpc."""
-    click.echo("Replace this message by putting your code into "
-               "wpc.cli.main")
-    click.echo("See click documentation at http://click.pocoo.org/")
-    return 0
 
+#@client.command()
+#def test(): pass
+
+#client.add_command(test)
 
 if __name__ == "__main__":
-    sys.exit(main())  # pragma: no cover
+    cli.cli()
+
+    # sys.exit(main())  # pragma: no cover
