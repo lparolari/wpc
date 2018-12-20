@@ -1,5 +1,6 @@
 import click
 from cli import client
+from cli import work
 from datetime import date
 
 
@@ -13,3 +14,4 @@ def cli():
 
 
 cli.add_command(client.client)
+cli.add_command(work.work)

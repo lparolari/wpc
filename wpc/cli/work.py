@@ -1,31 +1,30 @@
+import datetime
+
 import click
 from db.db import Db
-from wpc.models.client import Client
 
 
 @click.group()
-def client():
+def work():
     """
-    Group commands for clients.
+    Group commands for works.
     :return: None.
     """
     return
 
 
 @click.command()
-@click.option('--id',   type=int, help='The id of the client.')
-@click.option('--name', type=str, help='The name of the client.')
-def show(id, name):
+@click.option('--start', type=str, help='Filter work from date.')
+def show(start):
     """
-    Shows registered clients. If no filter is specified shows all clients.
+    Shows registered works.
 
-    :param id: The id of the client.
-    :param name: The name of the client.
-    :return: Void.
+    :return: None.
     """
 
-    for x in [1, 2, 3]:
-        click.echo(x)
+    # from_dt = datetime.date.fromtimestamp()
+
+    click.echo(start)
 
     return
 
@@ -39,18 +38,6 @@ def add():
     """
 
     name = click.prompt("Name", type=str)
-
-    # TODO: change this with the proper logic.
-
-    # Only for testing purposes.
-    db = Db()
-
-    new_client = Client(name=name)
-
-    db.session.add(new_client)
-    db.session.commit()
-
-    click.echo("Added %s" % name)
 
     return
 
@@ -87,7 +74,7 @@ def edit(id):
     return
 
 
-client.add_command(show)
-client.add_command(add)
-client.add_command(remove)
-client.add_command(edit)
+work.add_command(show)
+work.add_command(add)
+work.add_command(remove)
+work.add_command(edit)
