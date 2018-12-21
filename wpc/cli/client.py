@@ -1,6 +1,13 @@
+"""
+Entry point for the command line interface.
+"""
+
 import click
-from db.db import Db
-from wpc.models.client import Client
+
+from wpc.db.db import Db
+from wpc.model.client import Client
+
+db = Db()
 
 
 @click.group()
@@ -13,7 +20,7 @@ def client():
 
 
 @click.command()
-@click.option('--id',   type=int, help='The id of the client.')
+@click.option('--id', type=int, help='The id of the client.')
 @click.option('--name', type=str, help='The name of the client.')
 def show(id, name):
     """
@@ -21,11 +28,29 @@ def show(id, name):
 
     :param id: The id of the client.
     :param name: The name of the client.
-    :return: Void.
+    :return: None.
     """
 
-    for x in [1, 2, 3]:
-        click.echo(x)
+    clients = []
+
+    # Find results.
+    if id is not None:
+        res = db.find(Client, id)
+        if res is not None:
+            clients = [res]
+    elif name is not None:
+        clients = db.query(Client)\
+                    .filter(Client.name.like("%"+name+"%"))\
+                    .all()
+    else:
+        clients = db.getAll(Client)
+
+    # Print results.
+    if len(clients) > 0:
+        click.echo("Clients: ")
+        [click.echo(" {}, {}".format(x.id, x.name)) for x in clients]
+    else:
+        click.echo("No clients found.")
 
     return
 
@@ -35,20 +60,18 @@ def add():
     """
     Insert a client into the system.
 
-    :return: Void.
+    :return: None.
     """
 
     name = click.prompt("Name", type=str)
 
-    # TODO: change this with the proper logic.
-
-    # Only for testing purposes.
-    db = Db()
+    if name is None:
+        click.echo("Name cannot be empty")
+        return
 
     new_client = Client(name=name)
 
-    db.session.add(new_client)
-    db.session.commit()
+    db.create(new_client)
 
     click.echo("Added %s" % name)
 
@@ -81,7 +104,7 @@ def edit(id):
     :return: Void.
     """
 
-    prev_name = "test prev name" # TODO: take this from sources.
+    prev_name = "test prev name"  # TODO: take this from sources.
     name = click.prompt("Name?", default=prev_name, type=str)
 
     return

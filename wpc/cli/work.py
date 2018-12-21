@@ -1,7 +1,5 @@
 import datetime
-
 import click
-from db.db import Db
 
 
 @click.group()
@@ -34,7 +32,7 @@ def add():
     """
     Insert a client into the system.
 
-    :return: Void.
+    :return: None.
     """
 
     name = click.prompt("Name", type=str)
@@ -65,7 +63,7 @@ def edit(id):
     """
     Edit a client.
     :param id: The id of the client.
-    :return: Void.
+    :return: None.
     """
 
     prev_name = "test prev name" # TODO: take this from sources.
