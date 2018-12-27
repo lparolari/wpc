@@ -5,45 +5,44 @@ Entry point for the command line interface.
 import click
 
 from wpc.db.db import Db
-from wpc.model.client import Client
+from wpc.model.customer import Customer
+from wpc.repository.repo import Repo
 
-db = Db()
+cli_repo = Repo(Customer)
 
 
 @click.group()
 def client():
     """
-    Group commands for clients.
-    :return: None.
+    Client's commands group.
     """
     return
 
 
 @click.command()
-@click.option('--id', type=int, help='The id of the client.')
+@click.option('--id', 'id_', type=int, help='The id of the client.')
 @click.option('--name', type=str, help='The name of the client.')
-def show(id, name):
+def show(id_, name):
     """
     Shows registered clients. If no filter is specified shows all clients.
 
-    :param id: The id of the client.
+    :param id_: The id of the client.
     :param name: The name of the client.
-    :return: None.
     """
 
     clients = []
 
     # Find results.
-    if id is not None:
-        res = db.find(Client, id)
+    if id_ is not None:
+        res = cli_repo.find(id_)
         if res is not None:
             clients = [res]
     elif name is not None:
-        clients = db.query(Client)\
-                    .filter(Client.name.like("%"+name+"%"))\
+        clients = cli_repo.query()\
+                    .filter(Customer.name.like("%"+name+"%"))\
                     .all()
     else:
-        clients = db.getAll(Client)
+        clients = cli_repo.query().all()
 
     # Print results.
     if len(clients) > 0:
@@ -59,8 +58,6 @@ def show(id, name):
 def add():
     """
     Insert a client into the system.
-
-    :return: None.
     """
 
     name = click.prompt("Name", type=str)
@@ -69,9 +66,9 @@ def add():
         click.echo("Name cannot be empty")
         return
 
-    new_client = Client(name=name)
+    new_client = Customer(name=name)
 
-    db.create(new_client)
+    cli_repo.create(new_client)
 
     click.echo("Added %s" % name)
 
@@ -79,33 +76,48 @@ def add():
 
 
 @click.command()
-@click.argument('id', type=int, required=True)
-def remove(id):
+@click.argument('id', 'id_', type=int, required=True)
+def remove(id_):
     """
     Removes a client, i.e., marks it as "obsolete". This does not remove the client effectively
     from the system because the data related to it.
 
-    :param id: The id of the client.
-    :return: None.
+    :param id_: The id of the client.
     """
 
+    c = cli_repo.find(id_)
+    if c is None:
+        click.echo("Client with id %s not found." % id_)
+        return
+
     if click.confirm("Are you sure?"):
-        pass
+        cli_repo.remove(c)
+        click.echo("Success.")
+    else:
+        click.echo("OK.")
 
     return
 
 
 @click.command()
-@click.argument('id', type=int, required=True)
-def edit(id):
+@click.argument('id', 'id_', type=int, required=True)
+def edit(id_):
     """
     Edit a client.
-    :param id: The id of the client.
-    :return: Void.
+    :param id_: The id of the client.
     """
 
-    prev_name = "test prev name"  # TODO: take this from sources.
-    name = click.prompt("Name?", default=prev_name, type=str)
+    c = cli_repo.find(id_)
+    if c is None:
+        click.echo("Client with id %s not found." % id_)
+        return
+
+    name = click.prompt("Name?", default=c.name, type=str)
+
+    c.name = name
+    cli_repo.update(c)
+
+    click.echo("Success.")
 
     return
 
