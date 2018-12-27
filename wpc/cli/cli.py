@@ -6,11 +6,14 @@ from datetime import date
 
 @click.group()
 def cli():
-    """Console script for wpc."""
-    click.echo("Work Pay Calculator @ 2018-" + str(date.today().year))
-    click.echo("lparolari <luca.parolari23@gmail.com>")
+    """
+    Command line interface for wpc.
 
-    click.echo()
+
+    Luca Parolari <luca.parolari23@gmail.com>
+
+    Work Pay Calculator @ 2018
+    """
 
 
 cli.add_command(client.client)
