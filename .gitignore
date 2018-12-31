@@ -104,3 +104,13 @@ venv*
 
 # pycharm
 .idea
+
+
+# ==========================
+
+# test database file
+wpc.db
+# test config.ini file
+config.ini
+# test tex file
+basic_maketitle2.tex
