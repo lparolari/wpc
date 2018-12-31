@@ -76,7 +76,7 @@ def add():
 
 
 @click.command()
-@click.argument('id', 'id_', type=int, required=True)
+@click.argument('id_', type=int, required=True)
 def remove(id_):
     """
     Removes a client, i.e., marks it as "obsolete". This does not remove the client effectively
@@ -84,6 +84,7 @@ def remove(id_):
 
     :param id_: The id of the client.
     """
+    # TODO: implement obsolete client.
 
     c = cli_repo.find(id_)
     if c is None:
@@ -100,7 +101,7 @@ def remove(id_):
 
 
 @click.command()
-@click.argument('id', 'id_', type=int, required=True)
+@click.argument('id_', type=int, required=True)
 def edit(id_):
     """
     Edit a client.
