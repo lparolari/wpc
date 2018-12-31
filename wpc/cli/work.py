@@ -23,6 +23,9 @@ def work():
 def between(begin, end):
     # parse begin date, parse end date
     # filter
+
+    raise NotImplementedError
+
     return
 
 
@@ -101,11 +104,13 @@ def add():
 
     # name = click.prompt("Name", type=str)
 
+    raise NotImplementedError
+
     return
 
 
 @click.command()
-@click.argument('id', 'id_', type=int, required=True)
+@click.argument('id_', type=int, required=True)
 def remove(id_):
     """
     Removes a client, i.e., marks it as "obsolete". This does not remove the client effectively
@@ -121,12 +126,14 @@ def remove(id_):
 
 
 @click.command()
-@click.argument('id', 'id_', type=int, required=True)
+@click.argument('id_', type=int, required=True)
 def edit(id_):
     """
     Edit a client.
     :param id_: The id of the client.
     """
+
+    raise NotImplementedError
 
     prev_name = "test prev name"  # TODO: take this from sources.
     name = click.prompt("Name?", default=prev_name, type=str)
