@@ -1,4 +1,4 @@
-from sqlalchemy import Column, ForeignKey, Integer, Float, String, DateTime
+from sqlalchemy import Column, ForeignKey, Integer, Float, String, DateTime, Boolean
 from sqlalchemy.orm import relationship
 from wpc.model.base import Base
 
@@ -14,6 +14,7 @@ class Work(Base):
     note = Column(String)
     registry = Column(String, nullable=False)
     price = Column(Float, nullable=False)
+    prod = Column(Boolean, nullable=False, default=True)
 
     customer_id = Column(Integer, ForeignKey("customers.id"))
     customer = relationship("Customer", foreign_keys=[customer_id])
@@ -21,7 +22,7 @@ class Work(Base):
     @property
     def datestr(self):
         """
-        TODO the docs
+        TODO: write documentation
         :return:
         """
         return self.date.strftime("%d/%m/%Y %H:%M")
