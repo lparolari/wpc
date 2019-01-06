@@ -14,13 +14,16 @@ cust_repo = CustomerRepo()
 
 @click.command()
 @click.option('-c', '--set-customer', help="Select a customer and remember it for the whole session")
-def config(set_customer):
+@click.option('--debug/--no-debug', help="Change app mode to debug", default=None)
+def config(set_customer, debug):
     """
     Config command.
     """
 
     if set_customer is not None:
         _set_customer(set_customer)
+    elif debug is not None:
+        _set_debug(debug)
     else:
         click.echo("No operations performed.")
 
@@ -39,3 +42,9 @@ def _set_customer(c_name_or_id):
     else:
         configurator.customer = str(customer.id)
         click.echo("Customer %s set." % customer.name)
+
+
+def _set_debug(is_debug):
+
+    configurator.debug = is_debug
+    click.echo("Debug setted to %s." % is_debug)

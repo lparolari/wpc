@@ -5,6 +5,13 @@ class Configurator(object):
 
     _cfg = None
 
+    SEC_SESSION = 'session'
+    OPT_CUSTOMER_ID = 'customer.id'
+
+    SEC_COMMON = 'common'
+    OPT_DATEFORMAT = 'dateformat'
+    OPT_DEBUG = 'debug'
+
     def __init__(self) -> None:
         super().__init__()
         self._cfg = ConfigParser()
@@ -15,25 +22,37 @@ class Configurator(object):
     @property
     def customer(self):
         self._read()
-        return self._cfg.get("session", "customer.id")
+        return self._cfg.get(self.SEC_SESSION, self.OPT_CUSTOMER_ID)
 
     @customer.setter
     def customer(self, value):
         self._read()
-        self._do_section("session")
-        self._cfg.set("session", "customer.id", value)
+        self._do_section(self.SEC_SESSION)
+        self._cfg.set(self.SEC_SESSION, self.OPT_CUSTOMER_ID, value)
         self._save()
 
     @property
     def dateformat(self):
         self._read()
-        return self._cfg.get("common", "dateformat")
+        return self._cfg.get(self.SEC_COMMON, self.OPT_DATEFORMAT)
 
     @dateformat.setter
     def dateformat(self, value):
         self._read()
-        self._do_section("common")
-        self._cfg.set("common", "dateformat", value)
+        self._do_section(self.SEC_COMMON)
+        self._cfg.set(self.SEC_COMMON, self.OPT_DATEFORMAT, value)
+        self._save()
+
+    @property
+    def debug(self):
+        self._read()
+        return self._cfg.get(self.SEC_COMMON, self.OPT_DEBUG)
+
+    @debug.setter
+    def debug(self, value):
+        self._read()
+        self._do_section(self.SEC_COMMON)
+        self._cfg.set(self.SEC_COMMON, self.OPT_DEBUG, str(value))
         self._save()
 
     def _save(self):
@@ -48,8 +67,10 @@ class Configurator(object):
         Creates default values if does not exist or if ``force`` is true.
         :param force: If true, restores the default values.
         """
-        if force or not self._cfg.has_option("common", "dateformat"):
+        if force or not self._cfg.has_option(self.SEC_COMMON, self.OPT_DATEFORMAT):
             self.dateformat = str("%%d/%%m/%%Y")
+        if force or not self._cfg.has_option(self.SEC_COMMON, self.OPT_DEBUG):
+            self.debug = str(False)
 
     def _do_section(self, value):
         """
