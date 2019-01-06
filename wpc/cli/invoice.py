@@ -11,17 +11,15 @@ from dateutil.relativedelta import relativedelta
 from tabulate import tabulate
 
 from wpc.model.invoice import Invoice
-from wpc.model.invoice_with_hours import InvoiceWithHours
 from wpc.repository.workrepo import WorkRepo
 from wpc.repository.invoicerepo import InvoiceRepo
 from wpc.config.configurator import Configurator
-from wpc.doc.doc import Doc
+from wpc.doc.invoice import InvoiceTexDoc
 
 work_repo = WorkRepo()
 invoice_repo = InvoiceRepo()
 configurator = Configurator()
-doc = Doc()
-
+doc = InvoiceTexDoc()
 
 class InvoiceCli:
     pass
@@ -112,16 +110,23 @@ def add():
     if begin > end:
         raise ValueError("From date cannot be greater than end date")
 
+    reason = click.prompt("Reason", default="assistenza presso Vostri clienti")
+    prog = click.prompt("Progressive", default=invoice_repo.getNextProg())
+    note = click.prompt("Note", default="")
+
+    note = (note if note != "" else None)
+
     click.echo()
     click.echo("Summary:")
     click.echo()
 
-    gross = work_repo.getProfitGrossBetween(begin, end)
-    tax = work_repo.getProfitTaxBetween(begin, end)
-    net = work_repo.getProfitNetBetween(begin, end)
+    gross = work_repo.getTotalGrossBetween(begin, end)
+    tax = work_repo.getTotalTaxBetween(begin, end)
+    net = work_repo.getTotalNetBetween(begin, end)
     hours_tot = work_repo.getHoursBetween(begin, end)
     hours_p = work_repo.getHoursProdBetween(begin, end)
     hours_np = work_repo.getHoursNonProdBetween(begin, end)
+    km = work_repo.getKmBetween(begin, end)
 
     click.echo(tabulate(
         [[
@@ -130,10 +135,12 @@ def add():
             str(hours_tot),
             str(hours_p),
             str(hours_np),
+            str(km),
             str(gross),
             str(tax),
-            str(net)]],
-        ['Form', 'To', 'Tot. Hours', 'P. Hours', 'Non P. Hours', 'Gross', 'Tax', 'Net']))
+            str(net)
+        ]],
+        ['Form', 'To', 'Tot. Hours', 'P. Hours', 'Non P. Hours', 'Km', 'Gross', 'Tax', 'Net']))
 
     click.echo()
 
@@ -141,16 +148,10 @@ def add():
         click.echo("Invoice not emitted.")
         return
 
-    inv = Invoice.create(begin, end, gross, configurator.customer)
+    inv = Invoice.create(begin, end, gross, configurator.customer, prog, reason, tax, net, note)
     invoice_repo.create(inv)
 
-    doc.gross = gross
-    doc.tax = tax
-    doc.net = net
-    doc.gross_words = "aaaa"
-    doc.date = datetime.today()
-    doc.invoice_reason = 'aaaaa'
-    doc.progressive = 1
+    doc.set_invoice_from(inv)
 
     ret = doc.generate()
     click.echo()
