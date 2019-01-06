@@ -46,7 +46,7 @@ class Configurator(object):
     @property
     def debug(self):
         self._read()
-        return self._cfg.get(self.SEC_COMMON, self.OPT_DEBUG)
+        return self._cfg.getboolean(self.SEC_COMMON, self.OPT_DEBUG)
 
     @debug.setter
     def debug(self, value):
