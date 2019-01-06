@@ -15,7 +15,7 @@ from wpc.model.invoice_with_hours import InvoiceWithHours
 from wpc.repository.workrepo import WorkRepo
 from wpc.repository.invoicerepo import InvoiceRepo
 from wpc.config.configurator import Configurator
-from wpc.docgen.doc import Doc
+from wpc.doc.doc import Doc
 
 work_repo = WorkRepo()
 invoice_repo = InvoiceRepo()
@@ -116,23 +116,23 @@ def add():
     click.echo("Summary:")
     click.echo()
 
-    gross = str(work_repo.getProfitGrossBetween(begin, end))
-    tax = str(work_repo.getProfitTaxBetween(begin, end))
-    net = str(work_repo.getProfitNetBetween(begin, end))
-    hours_tot = str(work_repo.getHoursBetween(begin, end))
-    hours_p = str(work_repo.getHoursProdBetween(begin, end))
-    hours_np = str(work_repo.getHoursNonProdBetween(begin, end))
+    gross = work_repo.getProfitGrossBetween(begin, end)
+    tax = work_repo.getProfitTaxBetween(begin, end)
+    net = work_repo.getProfitNetBetween(begin, end)
+    hours_tot = work_repo.getHoursBetween(begin, end)
+    hours_p = work_repo.getHoursProdBetween(begin, end)
+    hours_np = work_repo.getHoursNonProdBetween(begin, end)
 
     click.echo(tabulate(
         [[
             begin.strftime("%d/%m/%Y"),
             end.strftime("%d/%m/%Y"),
-            hours_tot,
-            hours_p,
-            hours_np,
-            gross,
-            tax,
-            net]],
+            str(hours_tot),
+            str(hours_p),
+            str(hours_np),
+            str(gross),
+            str(tax),
+            str(net)]],
         ['Form', 'To', 'Tot. Hours', 'P. Hours', 'Non P. Hours', 'Gross', 'Tax', 'Net']))
 
     click.echo()
@@ -144,9 +144,21 @@ def add():
     inv = Invoice.create(begin, end, gross, configurator.customer)
     invoice_repo.create(inv)
 
-    # TODO: generate pdf with invoice and registry.
+    doc.gross = gross
+    doc.tax = tax
+    doc.net = net
+    doc.gross_words = "aaaa"
+    doc.date = datetime.today()
+    doc.invoice_reason = 'aaaaa'
+    doc.progressive = 1
 
-    click.echo("Invoice emitted.")
+    ret = doc.generate()
+    click.echo()
+
+    if ret is False:
+        click.echo("Error occurred. To debug the application set the debug flag with config command.")
+    else:
+        click.echo("Invoice emitted. Locate it at %s" % ret)
 
     return
 
