@@ -1,11 +1,15 @@
 from functools import reduce
 from datetime import datetime, date, timedelta
 from calendar import monthrange
+
+from config.configurator import Configurator
 from wpc.model.work import Work
 from wpc.repository.crudrepo import CrudRepo
 
 
 class WorkRepo(CrudRepo):
+
+    _configurator = Configurator()
 
     def __init__(self, clazz=Work):
         super().__init__(clazz)
@@ -49,7 +53,9 @@ class WorkRepo(CrudRepo):
         return reduce(
             (lambda x, y: x + y),
             map(
-                (lambda x: (x.price * (x.hours.seconds / 60 / 60)) if x.prod is True else 0),  # TODO: check how this works with non o-clock hours.
+                (lambda x: (
+                    (x.price * (x.hours.seconds / 60 / 60)) if x.prod is True else 0)
+                 ),  # TODO: check how this works with non o-clock hours.
                 self.getBetweenStart(begin, end + timedelta(days=+1))))
 
     def getHoursBetween(self, begin, end):
@@ -73,7 +79,7 @@ class WorkRepo(CrudRepo):
         return reduce(
             (lambda x, y: x + y),
             map(
-                (lambda x: x.hours if x.prod is True else 0),
+                (lambda x: x.hours if x.prod is True else timedelta(0)),
                 self.getBetweenStart(begin, end + timedelta(days=+1))))
 
     def getHoursNonProdBetween(self, begin, end):
@@ -85,7 +91,19 @@ class WorkRepo(CrudRepo):
         return reduce(
             (lambda x, y: x + y),
             map(
-                (lambda x: x.hours if x.prod is False else 0),
+                (lambda x: x.hours if x.prod is False else timedelta(0)),
+                self.getBetweenStart(begin, end + timedelta(days=+1))))
+
+    def getKmBetween(self, begin, end):
+        """
+        :param begin: Lower bound starting data (included in search).
+        :param end: Upper bound starting date (included in search).
+        :return: The km for works between ``begin`` and ``end``.
+        """
+        return reduce(
+            (lambda x, y: x + y),
+            map(
+                (lambda x: x.km),
                 self.getBetweenStart(begin, end + timedelta(days=+1))))
 
     # not core methods: utilize other methods for the result.
@@ -135,3 +153,27 @@ class WorkRepo(CrudRepo):
         :return: The net for works between ``begin`` and ``end``.
         """
         return self.getProfitGrossBetween(begin, end) - self.getProfitTaxBetween(begin, end)
+
+    def getTotalTaxBetween(self, begin, end):
+        """
+        :param begin: Lower bound starting data (included in search).
+        :param end: Upper bound starting date (included in search).
+        :return: The tax for works between ``begin`` and ``end``.
+        """
+        return (self.getProfitGrossBetween(begin, end) + self.getKmBetween(begin, end) / self._configurator.km_litre * self._configurator.oil_cost_litre) / 100 * 20
+
+    def getTotalGrossBetween(self, begin, end):
+        """
+        :param begin: Lower bound starting data (included in search).
+        :param end: Upper bound starting date (included in search).
+        :return: The gross for works between ``begin`` and ``end``.
+        """
+        return self.getProfitGrossBetween(begin, end) + self.getKmBetween(begin, end) / self._configurator.km_litre * self._configurator.oil_cost_litre
+
+    def getTotalNetBetween(self, begin, end):
+        """
+        :param begin: Lower bound starting data (included in search).
+        :param end: Upper bound starting date (included in search).
+        :return: The net for works between ``begin`` and ``end``.
+        """
+        return self.getTotalGrossBetween(begin, end) - self.getTotalTaxBetween(begin, end)

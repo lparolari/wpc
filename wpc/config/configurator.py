@@ -7,10 +7,15 @@ class Configurator(object):
 
     SEC_SESSION = 'session'
     OPT_CUSTOMER_ID = 'customer.id'
+    OPT_KM_LITRE = 'km_litre'
+    OPT_OIL_COST_LITRE = 'oil_cost_litre'
 
     SEC_COMMON = 'common'
     OPT_DATEFORMAT = 'dateformat'
     OPT_DEBUG = 'debug'
+
+    SEC_DOC = 'doc'
+    OPT_CLEAR_SOURCES = 'clear_src'
 
     def __init__(self) -> None:
         super().__init__()
@@ -55,6 +60,42 @@ class Configurator(object):
         self._cfg.set(self.SEC_COMMON, self.OPT_DEBUG, str(value))
         self._save()
 
+    @property
+    def clear_sources(self):
+        self._read()
+        return self._cfg.getboolean(self.SEC_DOC, self.OPT_CLEAR_SOURCES)
+
+    @clear_sources.setter
+    def clear_sources(self, value):
+        self._read()
+        self._do_section(self.SEC_DOC)
+        self._cfg.set(self.SEC_DOC, self.OPT_CLEAR_SOURCES, str(value))
+        self._save()
+
+    @property
+    def km_litre(self):
+        self._read()
+        return self._cfg.getint(self.SEC_SESSION, self.OPT_KM_LITRE)
+
+    @km_litre.setter
+    def km_litre(self, value):
+        self._read()
+        self._do_section(self.SEC_SESSION)
+        self._cfg.set(self.SEC_SESSION, self.OPT_KM_LITRE, str(value))
+        self._save()
+
+    @property
+    def oil_cost_litre(self):
+        self._read()
+        return self._cfg.getfloat(self.SEC_SESSION, self.OPT_OIL_COST_LITRE)
+
+    @oil_cost_litre.setter
+    def oil_cost_litre(self, value):
+        self._read()
+        self._do_section(self.SEC_SESSION)
+        self._cfg.set(self.SEC_SESSION, self.OPT_OIL_COST_LITRE, str(value))
+        self._save()
+
     def _save(self):
         with open('config.ini', 'w') as configfile:
             self._cfg.write(configfile)
@@ -71,6 +112,12 @@ class Configurator(object):
             self.dateformat = str("%%d/%%m/%%Y")
         if force or not self._cfg.has_option(self.SEC_COMMON, self.OPT_DEBUG):
             self.debug = str(False)
+        if force or not self._cfg.has_option(self.SEC_DOC, self.OPT_CLEAR_SOURCES):
+            self.clean_sources = str(True)
+        if force or not self._cfg.has_option(self.SEC_SESSION, self.OPT_KM_LITRE):
+            self.km_litre = str(15)
+        if force or not self._cfg.has_option(self.SEC_SESSION, self.OPT_OIL_COST_LITRE):
+            self.oil_cost_litre = str(1.5)
 
     def _do_section(self, value):
         """

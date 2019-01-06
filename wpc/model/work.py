@@ -15,6 +15,7 @@ class Work(Base):
     registry = Column(String, nullable=False)
     price = Column(Float, nullable=False)
     prod = Column(Boolean, nullable=False, default=True)
+    km = Column(Integer, nullable=False, default=0)
 
     customer_id = Column(Integer, ForeignKey("customers.id"))
     customer = relationship("Customer", foreign_keys=[customer_id])
