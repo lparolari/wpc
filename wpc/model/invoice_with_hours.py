@@ -19,6 +19,9 @@ class InvoiceWithHours(Base):
     from_dt = Column(DateTime, nullable=False)
     to_dt = Column(DateTime, nullable=False)
 
+    reason = Column(String, nullable=False)
+    prog = Column(Integer, nullable=False)
+
     note = Column(String)
 
     hours_prod = Column(Float, default=0, nullable=False)

@@ -19,13 +19,16 @@ class Invoice(Base):
     from_dt = Column(DateTime, nullable=False)
     to_dt = Column(DateTime, nullable=False)
 
+    reason = Column(String, nullable=False)
+    prog = Column(Integer, nullable=False)
+
     note = Column(String)
 
     customer_id = Column(Integer, ForeignKey("customers.id"))
     customer = relationship("Customer", foreign_keys=[customer_id])
 
     @staticmethod
-    def create(from_dt, to_dt, gross, customer_id, tax=None, net=None, note=None):
+    def create(from_dt, to_dt, gross, customer_id, prog, reason, tax=None, net=None, note=None):
         inv = Invoice()
         inv.emitted_at = datetime.today()
         inv.from_dt = from_dt
@@ -35,6 +38,8 @@ class Invoice(Base):
         inv.tax = tax
         inv.net = net
         inv.note = note
+        inv.prog = prog
+        inv.reason = reason
         return inv
 
     @property
