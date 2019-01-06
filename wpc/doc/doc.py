@@ -1,106 +1,51 @@
+import glob
 import os
+import re
 import subprocess
 from pathlib import Path
 
 from config.configurator import Configurator
 
-configurator = Configurator()
-
 
 class Doc(object):
 
-    GROSS = 'GROSS'
-    TAX = 'TAX'
-    NET = 'NET'
-    GROSS_WORDS = 'GROSSWORDS'
-    INVOICE_REASON = 'INVOICEREASON'
-    PROGRESSIVE = 'PROGRESSIVE'
-    DATE = 'DATE'
+    _configurator = Configurator()
 
-    _template = None
-    _data = {
-        GROSS: 0,
-        TAX: 0,
-        NET: 0,
-        GROSS_WORDS: 'zero/00',
-        INVOICE_REASON: None,
-        PROGRESSIVE: 0,
-        DATE: None
-    }
+    # configurations.
+    _clear_sources = True
+    _debug = False
 
-    @property
-    def gross(self):
-        return str(round(self._data[self.GROSS], 2))
+    _data = {}
 
-    @gross.setter
-    def gross(self, value):
-        self._data[self.GROSS] = value
-
-    @property
-    def tax(self):
-        return str(round(self._data[self.TAX], 2))
-
-    @tax.setter
-    def tax(self, value):
-        self._data[self.TAX] = value
-
-    @property
-    def net(self):
-        return str(round(self._data[self.NET], 2))
-
-    @net.setter
-    def net(self, value):
-        self._data[self.NET] = value
-
-    @property
-    def gross_words(self):
-        return self._data[self.GROSS_WORDS]
-
-    @gross_words.setter
-    def gross_words(self, value):
-        self._data[self.GROSS_WORDS] = value
-
-    @property
-    def invoice_reason(self):
-        return self._data[self.INVOICE_REASON]
-
-    @invoice_reason.setter
-    def invoice_reason(self, value):
-        self._data[self.INVOICE_REASON] = value
-
-    @property
-    def progressive(self):
-        return str(self._data[self.PROGRESSIVE])
-
-    @progressive.setter
-    def progressive(self, value):
-        self._data[self.PROGRESSIVE] = value
-
-    @property
-    def date(self):
-        return self._data[self.DATE].strftime('%d/%m/%Y')
-
-    @date.setter
-    def date(self, value):
-        self._data[self.DATE] = value
-
-    @property
-    def date_file(self):
-        return self._data[self.DATE].strftime('%Y%m%d-%H%M%S')
-
-    # TODO: add template management.
+    def __init__(self) -> None:
+        super().__init__()
+        self._debug = self._configurator.debug
+        self._clean_sources = self._configurator.clear_sources
 
     def ext_src(self):
-        # TODO: implement in latex impl.
-        return 'tex'
+        """
+        :return: The file extension of source to compile.
+        """
+        raise NotImplementedError("This method should be implemented")
 
     def ext_out(self):
-        # TODO: implement in latex impl.
+        """
+        :return: The file extension of the output.
+        """
         return 'pdf'
 
     def template(self):
-        # TODO: implement in latex impl.
-        return os.path.join(os.getcwd(), 'res', 'templates', 'tex', 'default', 'invoice', 'invoice.tex')
+        """
+        :return: The template filename.
+        """
+        raise NotImplementedError("This method should be implemented")
+
+    @property
+    def date_file(self):
+        """
+        :return: The formatted datetime for filename.
+        """
+        raise NotImplementedError("This method should be implemented")
 
     def _generate_doc(self, out_dir, out_file):
         # TODO: implement in latex impl.
@@ -109,7 +54,7 @@ class Doc(object):
         except ImportError:
             DEVNULL = open(os.devnull, 'wb')
 
-        if configurator.debug:
+        if self._debug:
             proc = subprocess.Popen(['pdflatex', '-output-directory', out_dir, out_file])
         else:
             proc = subprocess.Popen(['pdflatex', '-output-directory', out_dir, out_file], stdout=DEVNULL,
@@ -117,10 +62,28 @@ class Doc(object):
         proc.communicate()
         return proc.returncode
 
+    @staticmethod
+    def _replace_whole(key, val, filedata):
+        return re.sub(r'\b%s\b' % re.escape(key), val, filedata)
+
+    def replace(self, filedata):
+        """
+        Search and replaces the keys with their values in template.
+
+        :param filedata: A string containing the template data.
+        :return: A string with replaced data in template.
+        """
+        raise NotImplementedError("This method should be implemented")
+
     def generate(self):
-        for x in self._data.values():
-            if x is None:
-                raise ValueError
+        """
+        Generates the document from the template, replacing keys with their values.
+        :return: Compiled filename if success, False otherwise.
+        """
+        for key, val in self._data.items():
+            # print(key + ": " + str(val))
+            if val is None:
+                raise ValueError('Cannot generate a document: %s is None' % key)
 
         home_path = str(Path.home())
         out_dir = os.path.join(home_path, 'wpc-invoices')
@@ -137,19 +100,18 @@ class Doc(object):
             filedata = i.read()
 
         # replaces data.
-        filedata = filedata.replace(self.GROSS, self.gross)
-        filedata = filedata.replace(self.TAX, self.tax)
-        filedata = filedata.replace(self.NET, self.net)
-        filedata = filedata.replace(self.GROSS_WORDS, self.gross_words)
-        filedata = filedata.replace(self.INVOICE_REASON, self.invoice_reason)
-        filedata = filedata.replace(self.PROGRESSIVE, self.progressive)
-        filedata = filedata.replace(self.DATE, self.date)
+        filedata = self.replace(filedata)
 
         # write out template to compile.
         with open(out_src_file, 'w') as o:
             o.write(filedata)
 
         if self._generate_doc(out_dir, out_src_file) == 0:
+            if self._clear_sources:
+                cleanup_files = glob.glob(out_fn + '.*')
+                cleanup_files.remove(out_compiled_file)
+                [os.remove(file) for file in cleanup_files]
+
             return out_compiled_file
         else:
             return False
