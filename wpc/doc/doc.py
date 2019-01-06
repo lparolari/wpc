@@ -6,6 +6,7 @@ from config.configurator import Configurator
 
 configurator = Configurator()
 
+
 class Doc(object):
 
     GROSS = 'GROSS'
@@ -108,7 +109,6 @@ class Doc(object):
         except ImportError:
             DEVNULL = open(os.devnull, 'wb')
 
-        print(configurator.debug)
         if configurator.debug:
             proc = subprocess.Popen(['pdflatex', '-output-directory', out_dir, out_file])
         else:
