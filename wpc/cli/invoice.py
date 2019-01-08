@@ -3,7 +3,7 @@ Entry point for the command line interface.
 """
 
 from calendar import monthrange
-from datetime import date, datetime
+from datetime import date, datetime, time
 
 import click
 from dateutil import parser
@@ -86,7 +86,8 @@ def show(id_, date):
 
 
 @click.command()
-def add():
+@click.option('-e/--explicit', 'explicit', is_flag=True, help='Define all data for the invoice and show calculated as defaults.')
+def add(explicit):
     """
     Insert an invoice into the system.
     """
@@ -116,17 +117,30 @@ def add():
 
     note = (note if note != "" else None)
 
-    click.echo()
-    click.echo("Summary:")
-    click.echo()
-
-    gross = work_repo.getTotalGrossBetween(begin, end)
-    tax = work_repo.getTotalTaxBetween(begin, end)
     net = work_repo.getTotalNetBetween(begin, end)
+    tax = work_repo.getTotalTaxBetween(begin, end)
+    gross = work_repo.getTotalGrossBetween(begin, end)
     hours_tot = work_repo.getHoursBetween(begin, end)
     hours_p = work_repo.getHoursProdBetween(begin, end)
     hours_np = work_repo.getHoursNonProdBetween(begin, end)
     km = work_repo.getKmBetween(begin, end)
+    date_ = datetime.today()
+
+    if explicit:
+        date_ = parser.parse(click.prompt("Date", default=date_.strftime('%d/%m/%Y %H:%M')), parserinfo)
+        net = click.prompt("Net", gross, type=float)
+        tax = click.prompt("Tax", gross, type=float)
+        gross = click.prompt("Gross", gross, type=float)
+        hours_tot = click.prompt("Total hours", gross, type=float)
+        hours_p = click.prompt("Production hours", gross, type=float)
+        hours_np = click.prompt("Non production hours", gross, type=float)
+        km = click.prompt("Kilometers", gross, type=int)
+
+    # display results.
+
+    click.echo()
+    click.echo("Summary:")
+    click.echo()
 
     click.echo(tabulate(
         [[
@@ -149,9 +163,11 @@ def add():
         return
 
     inv = Invoice.create(begin, end, gross, configurator.customer, prog, reason, tax, net, note)
+    inv.emitted_at = date_
     invoice_repo.create(inv)
 
     doc.set_invoice_from(inv)
+    doc.date = date_
 
     ret = doc.generate()
     click.echo()
