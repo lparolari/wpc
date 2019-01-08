@@ -1,5 +1,3 @@
-import re
-
 from num2words import num2words
 
 from doc.doc_tex import DocTex
@@ -18,6 +16,10 @@ class InvoiceTexDoc(DocTex):
         self.progressive = 0
 
     # const to replace in template.
+
+    INVOICE_DOC_NAME = 'INVOICEDOCUMENTNAME'
+    OPENING_GRADE = 'OPENINGGRADE'
+
     GROSS = 'GROSS'
     TAX = 'TAX'
     NET = 'NET'
@@ -25,6 +27,17 @@ class InvoiceTexDoc(DocTex):
     REASON = 'INVOICEREASON'
     PROGRESSIVE = 'PROGRESSIVE'
     DATE = 'DATE'
+
+    RECIPIENT_NAME = 'RECIPIENTNAME'
+    RECIPIENT_STREET = 'RECIPIENTSTREET'
+    RECIPIENT_STREET_NO = 'RECIPIENTSTREETNO'
+    RECIPIENT_ZIP = 'RECIPIENTZIP'
+    RECIPIENT_CITY = 'RECIPIENTCITY'
+    RECIPIENT_PROV = 'RECIPIENTPROV'
+    RECIPIENT_COUNTRY = 'RECIPIENTCOUNTRY'
+    RECIPIENT_VAT = 'RECIPIENTVAT'
+    RECIPIENT_FISCAL_CODE = 'RECIPIENTFISCODE'
+    RECIPIENT_FISCAL_NAME = 'RECIPIENTFISNAME'
 
     # dict for data to replace in template.
     _data = {
@@ -34,7 +47,23 @@ class InvoiceTexDoc(DocTex):
         GROSS_WORDS: 'zero/00',
         REASON: None,
         PROGRESSIVE: 0,
-        DATE: None
+        DATE: None,
+
+        # TODO: take this defaults from configs.
+        INVOICE_DOC_NAME: 'Notula',
+        OPENING_GRADE: 'Spett.le',
+
+        # TODO: take this defaults from database!
+        RECIPIENT_FISCAL_NAME: 'Nexio Informatica S.r.l Unipersonale',
+        RECIPIENT_STREET: 'Via G. Marconi',
+        RECIPIENT_STREET_NO: '50',
+        RECIPIENT_ZIP: '25050',
+        RECIPIENT_CITY: 'Temù',
+        RECIPIENT_PROV: 'BS',
+        RECIPIENT_COUNTRY: 'Italia',
+        RECIPIENT_VAT: 'IT 04030320982',
+        RECIPIENT_FISCAL_CODE: 'IT 04030320982',
+        RECIPIENT_NAME: 'Antonio Toselli',
     }
 
     @property
@@ -93,6 +122,114 @@ class InvoiceTexDoc(DocTex):
     def date(self, value):
         self._data[self.DATE] = value
 
+    # invoice doc name
+    @property
+    def invoice_doc_name(self):
+        return self._data[self.INVOICE_DOC_NAME]
+
+    @invoice_doc_name.setter
+    def invoice_doc_name(self, value):
+        self._data[self.INVOICE_DOC_NAME] = value
+
+    # recipient name
+    @property
+    def recipient_name(self):
+        return self._data[self.RECIPIENT_NAME]
+
+    @recipient_name.setter
+    def recipient_name(self, value):
+        self._data[self.RECIPIENT_NAME] = value
+
+    # recipient street
+    @property
+    def recipient_street(self):
+        return self._data[self.RECIPIENT_STREET]
+
+    @recipient_street.setter
+    def recipient_street(self, value):
+        self._data[self.RECIPIENT_STREET] = value
+
+    # recipient street number.
+    @property
+    def recipient_street_number(self):
+        return self._data[self.RECIPIENT_STREET_NO]
+
+    @recipient_street_number.setter
+    def recipient_street_number(self, value):
+        self._data[self.RECIPIENT_STREET_NO] = value
+
+    # recipient zip
+    @property
+    def recipient_zip(self):
+        return self._data[self.RECIPIENT_ZIP]
+
+    @recipient_zip.setter
+    def recipient_zip(self, value):
+        self._data[self.RECIPIENT_ZIP] = value
+
+    # recipient city
+    @property
+    def recipient_city(self):
+        return self._data[self.RECIPIENT_CITY]
+
+    @recipient_city.setter
+    def recipient_city(self, value):
+        self._data[self.RECIPIENT_CITY] = value
+
+    # recipient prov
+    @property
+    def recipient_prov(self):
+        return self._data[self.RECIPIENT_PROV]
+
+    @recipient_prov.setter
+    def recipient_prov(self, value):
+        self._data[self.RECIPIENT_PROV] = value
+
+    # recipient country
+    @property
+    def recipient_country(self):
+        return self._data[self.RECIPIENT_COUNTRY]
+
+    @recipient_country.setter
+    def recipient_country(self, value):
+        self._data[self.RECIPIENT_COUNTRY] = value
+
+    # recipient vat
+    @property
+    def recipient_vat(self):
+        return self._data[self.RECIPIENT_VAT]
+
+    @recipient_vat.setter
+    def recipient_vat(self, value):
+        self._data[self.RECIPIENT_VAT] = value
+
+    # recipient fis code
+    @property
+    def recipient_fiscal_code(self):
+        return self._data[self.RECIPIENT_FISCAL_CODE]
+
+    @recipient_fiscal_code.setter
+    def recipient_fiscal_code(self, value):
+        self._data[self.RECIPIENT_FISCAL_CODE] = value
+
+    # recipient fiscal name
+    @property
+    def recipient_fiscal_name(self):
+        return self._data[self.RECIPIENT_FISCAL_NAME]
+
+    @recipient_fiscal_name.setter
+    def recipient_fiscal_name(self, value):
+        self._data[self.RECIPIENT_FISCAL_NAME] = value
+
+    # opening grade
+    @property
+    def opening_grade(self):
+        return self._data[self.OPENING_GRADE]
+
+    @opening_grade.setter
+    def opening_grade(self, value):
+        self._data[self.OPENING_GRADE] = value
+
     def set_invoice(self, gross, tax, net, datetime, reason, prog):
         self.gross = gross
         self.gross_words = gross
@@ -109,14 +246,31 @@ class InvoiceTexDoc(DocTex):
     def date_file(self):
         return self._data[self.DATE].strftime('%Y%m%d-%H%M%S')
 
-    def replace(self, filedata):
+    def replace(self, file_data):
 
-        filedata = super()._replace_whole(self.GROSS, self.gross, filedata)
-        filedata = super()._replace_whole(self.TAX, self.tax, filedata)
-        filedata = super()._replace_whole(self.NET, self.net, filedata)
-        filedata = super()._replace_whole(self.REASON, self.reason, filedata)
-        filedata = super()._replace_whole(self.PROGRESSIVE, self.progressive, filedata)
-        filedata = super()._replace_whole(self.DATE, self.date, filedata)
-        filedata = super()._replace_whole(self.GROSS_WORDS, self.gross_words, filedata)
+        # doc
+        file_data = super()._replace_whole(self.INVOICE_DOC_NAME, self.invoice_doc_name, file_data)
+        file_data = super()._replace_whole(self.OPENING_GRADE, self.opening_grade, file_data)
 
-        return filedata
+        # recipient
+        file_data = super()._replace_whole(self.RECIPIENT_FISCAL_NAME, self.recipient_fiscal_name, file_data)
+        file_data = super()._replace_whole(self.RECIPIENT_STREET, self.recipient_street, file_data)
+        file_data = super()._replace_whole(self.RECIPIENT_STREET_NO, self.recipient_street_number, file_data)
+        file_data = super()._replace_whole(self.RECIPIENT_ZIP, self.recipient_zip, file_data)
+        file_data = super()._replace_whole(self.RECIPIENT_CITY, self.recipient_city, file_data)
+        file_data = super()._replace_whole(self.RECIPIENT_PROV, self.recipient_prov, file_data)
+        file_data = super()._replace_whole(self.RECIPIENT_COUNTRY, self.recipient_country, file_data)
+        file_data = super()._replace_whole(self.RECIPIENT_VAT, self.recipient_vat, file_data)
+        file_data = super()._replace_whole(self.RECIPIENT_FISCAL_CODE, self.recipient_fiscal_code, file_data)
+
+        # data
+        file_data = super()._replace_whole(self.RECIPIENT_NAME, self.recipient_name, file_data)
+        file_data = super()._replace_whole(self.GROSS, self.gross, file_data)
+        file_data = super()._replace_whole(self.TAX, self.tax, file_data)
+        file_data = super()._replace_whole(self.NET, self.net, file_data)
+        file_data = super()._replace_whole(self.REASON, self.reason, file_data)
+        file_data = super()._replace_whole(self.PROGRESSIVE, self.progressive, file_data)
+        file_data = super()._replace_whole(self.DATE, self.date, file_data)
+        file_data = super()._replace_whole(self.GROSS_WORDS, self.gross_words, file_data)
+
+        return file_data
