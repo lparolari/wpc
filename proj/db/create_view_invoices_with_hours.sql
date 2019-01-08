@@ -27,3 +27,11 @@ union
 select i.id, i.emitted_at, i.gross, i.tax, i.net, i.from_dt, i.to_dt, i.note, i.customer_id, 0, i.hours, i.reason, i.prog
 from invoices_with_non_prod_hours i
 where i.id not in (select id from invoices_with_prod_hours)
+
+union
+
+-- invoices without works. (probably a fake invoice)
+select i.id, i.emitted_at, i.gross, i.tax, i.net, i.from_dt, i.to_dt, i.note, i.customer_id, 0, 0, i.reason, i.prog
+from invoices i
+where i.id not in (select id from invoices_with_prod_hours)
+  and i.id not in (select id from invoices_with_non_prod_hours)
