@@ -56,7 +56,7 @@ class WorkRepo(CrudRepo):
                 (lambda x: (
                     (x.price * (x.hours.seconds / 60 / 60)) if x.prod is True else 0)
                  ),  # TODO: check how this works with non o-clock hours.
-                self.getBetweenStart(begin, end + timedelta(days=+1))))
+                self.getBetweenStart(begin, end + timedelta(days=+1))), 0)
 
     def getHoursBetween(self, begin, end):
         """
@@ -68,7 +68,7 @@ class WorkRepo(CrudRepo):
             (lambda x, y: x + y),
             map(
                 (lambda x: x.hours),
-                self.getBetweenStart(begin, end + timedelta(days=+1))))
+                self.getBetweenStart(begin, end + timedelta(days=+1))), 0)
 
     def getHoursProdBetween(self, begin, end):
         """
@@ -80,7 +80,7 @@ class WorkRepo(CrudRepo):
             (lambda x, y: x + y),
             map(
                 (lambda x: x.hours if x.prod is True else timedelta(0)),
-                self.getBetweenStart(begin, end + timedelta(days=+1))))
+                self.getBetweenStart(begin, end + timedelta(days=+1))), 0)
 
     def getHoursNonProdBetween(self, begin, end):
         """
@@ -92,7 +92,7 @@ class WorkRepo(CrudRepo):
             (lambda x, y: x + y),
             map(
                 (lambda x: x.hours if x.prod is False else timedelta(0)),
-                self.getBetweenStart(begin, end + timedelta(days=+1))))
+                self.getBetweenStart(begin, end + timedelta(days=+1))), 0)
 
     def getKmBetween(self, begin, end):
         """
@@ -104,7 +104,7 @@ class WorkRepo(CrudRepo):
             (lambda x, y: x + y),
             map(
                 (lambda x: x.km),
-                self.getBetweenStart(begin, end + timedelta(days=+1))))
+                self.getBetweenStart(begin, end + timedelta(days=+1))), 0)
 
     # not core methods: utilize other methods for the result.
 
