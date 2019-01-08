@@ -113,7 +113,7 @@ class Configurator(object):
         if force or not self._cfg.has_option(self.SEC_COMMON, self.OPT_DEBUG):
             self.debug = str(False)
         if force or not self._cfg.has_option(self.SEC_DOC, self.OPT_CLEAR_SOURCES):
-            self.clean_sources = str(True)
+            self.clear_sources = str(True)
         if force or not self._cfg.has_option(self.SEC_SESSION, self.OPT_KM_LITRE):
             self.km_litre = str(15)
         if force or not self._cfg.has_option(self.SEC_SESSION, self.OPT_OIL_COST_LITRE):
@@ -126,6 +126,7 @@ class Configurator(object):
         """
         if not self._cfg.has_section(value):
             self._cfg.add_section(value)
+            self._save()
 
 
 configurator = Configurator()
