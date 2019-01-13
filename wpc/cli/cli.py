@@ -1,9 +1,9 @@
 import click
-from cli import client
-from cli import work
 from datetime import date
-from cli import invoice
-from cli import config
+from .client import client
+from .work import work
+from .invoice import invoice
+from .config import config
 
 
 @click.group()
