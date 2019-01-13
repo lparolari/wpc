@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from cli import cli
+from .cli import cli
 
 """Main module."""
 
