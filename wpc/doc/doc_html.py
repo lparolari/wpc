@@ -1,4 +1,4 @@
-from doc.doc import Doc
+from .doc import Doc
 
 
 class DocHtml(Doc):

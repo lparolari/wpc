@@ -4,7 +4,7 @@ import re
 import subprocess
 from pathlib import Path
 
-from config.configurator import Configurator
+from ..config.configurator import Configurator
 
 
 class Doc(object):

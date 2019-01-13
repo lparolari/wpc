@@ -2,7 +2,7 @@ from functools import reduce
 from datetime import datetime, date, timedelta
 from calendar import monthrange
 
-from config.configurator import Configurator
+from ..config.configurator import Configurator
 from wpc.model.work import Work
 from wpc.repository.crudrepo import CrudRepo
 

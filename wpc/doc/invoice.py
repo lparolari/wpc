@@ -1,6 +1,6 @@
 from num2words import num2words
 
-from doc.doc_tex import DocTex
+from .doc_tex import DocTex
 
 
 class InvoiceTexDoc(DocTex):
