@@ -21,6 +21,7 @@ invoice_repo = InvoiceRepo()
 configurator = Configurator()
 doc = InvoiceTexDoc()
 
+
 class InvoiceCli:
     pass
 
