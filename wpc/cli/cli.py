@@ -1,9 +1,11 @@
+# import wpc
+
 import click
-from cli import client
-from cli import work
 from datetime import date
-from cli import invoice
-from cli import config
+# from .client import client
+# from .work import work
+# from .invoice import invoice
+# from .config import config
 
 
 @click.group()
@@ -16,9 +18,7 @@ def cli():
 
     Work Pay Calculator @ 2018
     """
+    pass
 
 
-cli.add_command(client.client)
-cli.add_command(work.work)
-cli.add_command(invoice.invoice)
-cli.add_command(config.config)
+

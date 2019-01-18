@@ -37,7 +37,7 @@ setup(
                 "objective of manage your work (hours and costs) and emit invoices.",
     entry_points={
         'console_scripts': [
-            'wpc=wpc.cli:main',
+            'wpc=wpc.shell_cli:cli.main',
         ],
     },
     install_requires=requirements,

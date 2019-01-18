@@ -1,5 +1,5 @@
-from wpc.repository.baserepo import BaseRepo
-from wpc.model.customer import Customer
+from .baserepo import BaseRepo
+import wpc
 
 
 class CrudRepo(BaseRepo):
@@ -15,7 +15,7 @@ class CrudRepo(BaseRepo):
         self._s().commit()
 
     def find(self, id_):
-        return self._q().filter(Customer.id == id_).first()
+        return self._q().filter(wpc.model.Customer.id == id_).first()
 
     def getAll(self, *criterion):
         return self._q().filter(criterion).all()

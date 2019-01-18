@@ -20,9 +20,10 @@
 #
 import os
 import sys
+import wpc
+
 sys.path.insert(0, os.path.abspath('..'))
 
-import wpc
 
 # -- General configuration ---------------------------------------------
 

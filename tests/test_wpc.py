@@ -7,7 +7,7 @@ import pytest
 
 from click.testing import CliRunner
 
-from wpc import main
+# from wpc import main
 from wpc import cli
 
 

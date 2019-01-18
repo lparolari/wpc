@@ -1,4 +1,4 @@
-from wpc.repository.crudrepo import CrudRepo
+from .crudrepo import CrudRepo
 
 
 class Repo(CrudRepo):

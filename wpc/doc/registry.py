@@ -1,4 +1,5 @@
-from wpc.doc.doc import Doc
+from wpc.doc import Doc
+
 
 class RegistryDoc(Doc):
     pass
