@@ -3,7 +3,12 @@ import os
 import re
 import subprocess
 from pathlib import Path
-from wpc.config import Configurator
+
+# TODO: Qui funziona anche
+#  from wpc.config import Configurator
+#  ma non so quale dei due sia piu' opportuno
+
+from wpc.config.configurator import Configurator
 
 
 class Doc(object):

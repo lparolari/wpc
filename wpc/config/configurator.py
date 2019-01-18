@@ -118,6 +118,9 @@ class Configurator(object):
             self.km_litre = str(15)
         if force or not self._cfg.has_option(self.SEC_SESSION, self.OPT_OIL_COST_LITRE):
             self.oil_cost_litre = str(1.5)
+        # TODO: added by Shub
+        if force or not self._cfg.has_option(self.SEC_SESSION, self.OPT_CUSTOMER_ID):
+            self.customer = str(1)
 
     def _do_section(self, value):
         """

@@ -2,26 +2,13 @@ from functools import reduce
 from datetime import datetime, date, timedelta
 from calendar import monthrange
 
-# TODO: questi import relativi sono necessari perche' il primo __init__.py del package wpc
-#  effettua l'importazione dei subpackage in dato ordine, e se alcuni moduli, come questo,
-#  si riferiscono a classi o funzioni dello stesso livello, dello stesso subpackage,
-#  l' "import wpc" generico non funziona perche' per python questo subpackage non e' stato
-#  ancora inizializzato completamente ed inserito nel dizionario.
-
 from .crudrepo import CrudRepo
-
-# TODO: questo import relativo si evita con il seguente "import wpc":
-#  from ..config.configurator import Configurator
-#  Ma funziona solo se wpc.config e' stato gia' correttamente inzializzato
-
 from wpc.model import Work
 from wpc.config import Configurator
 
 
 class WorkRepo(CrudRepo):
 
-    # TODO: l'eliminazione dell'import relativo di cui sopra richiede ora
-    #  un riferimeno "FQDN"
     _configurator = Configurator()
 
     def __init__(self, clazz=Work):
