@@ -5,3 +5,4 @@ from .invoice import InvoiceTexDoc
 from .registry import RegistryDoc
 
 __all__ = ["Doc", "DocHtml", "DocTex", "InvoiceTexDoc", "RegistryDoc"]
+pass

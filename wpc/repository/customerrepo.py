@@ -1,8 +1,8 @@
 from .crudrepo import CrudRepo
-import wpc
+from wpc.model import Customer
 
 
 class CustomerRepo(CrudRepo):
 
-    def __init__(self, clazz=wpc.model.Customer):
+    def __init__(self, clazz=Customer):
         super().__init__(clazz)

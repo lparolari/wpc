@@ -14,16 +14,17 @@ from .crudrepo import CrudRepo
 #  from ..config.configurator import Configurator
 #  Ma funziona solo se wpc.config e' stato gia' correttamente inzializzato
 
-import wpc
+from wpc.model import Work
+from wpc.config import Configurator
 
 
 class WorkRepo(CrudRepo):
 
     # TODO: l'eliminazione dell'import relativo di cui sopra richiede ora
     #  un riferimeno "FQDN"
-    _configurator = wpc.config.Configurator()
+    _configurator = Configurator()
 
-    def __init__(self, clazz=wpc.model.Work):
+    def __init__(self, clazz=Work):
         super().__init__(clazz)
 
     def _q(self, clazz=None):
@@ -33,16 +34,16 @@ class WorkRepo(CrudRepo):
         """
         # TODO: implement clazz logic.
         return super(CrudRepo, self)._q()\
-            .filter(wpc.model.Work.customer_id == super()._configurator.customer)\
-            .order_by(wpc.model.Work.begin.desc(), wpc.model.Work.end.asc())
+            .filter(Work.customer_id == super()._configurator.customer)\
+            .order_by(Work.begin.desc(), Work.end.asc())
 
     def getAll(self, *criterion):
         return self._q().all()
 
     def getBetween(self, begin, end):
         return self._q() \
-            .filter(wpc.model.Work.begin >= begin) \
-            .filter(wpc.model.Work.end <= end) \
+            .filter(Work.begin >= begin) \
+            .filter(Work.end <= end) \
             .all()
 
     def getBetweenStart(self, begin, end):
@@ -52,8 +53,8 @@ class WorkRepo(CrudRepo):
         :return: A list of works between ``begin`` and ``end``, ``end`` excluded.
         """
         return self._q() \
-            .filter(wpc.model.Work.begin >= begin) \
-            .filter(wpc.model.Work.begin < end) \
+            .filter(Work.begin >= begin) \
+            .filter(Work.begin < end) \
             .all()
 
     def getProfitGrossBetween(self, begin, end):
