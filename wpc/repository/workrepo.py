@@ -2,16 +2,28 @@ from functools import reduce
 from datetime import datetime, date, timedelta
 from calendar import monthrange
 
-from ..config.configurator import Configurator
-from wpc.model.work import Work
-from wpc.repository.crudrepo import CrudRepo
+# TODO: questi import relativi sono necessari perche' il primo __init__.py del package wpc
+#  effettua l'importazione dei subpackage in dato ordine, e se alcuni moduli, come questo,
+#  si riferiscono a classi o funzioni dello stesso livello, dello stesso subpackage,
+#  l' "import wpc" generico non funziona perche' per python questo subpackage non e' stato
+#  ancora inizializzato completamente ed inserito nel dizionario.
+
+from .crudrepo import CrudRepo
+
+# TODO: questo import relativo si evita con il seguente "import wpc":
+#  from ..config.configurator import Configurator
+#  Ma funziona solo se wpc.config e' stato gia' correttamente inzializzato
+
+import wpc
 
 
 class WorkRepo(CrudRepo):
 
-    _configurator = Configurator()
+    # TODO: l'eliminazione dell'import relativo di cui sopra richiede ora
+    #  un riferimeno "FQDN"
+    _configurator = wpc.config.Configurator()
 
-    def __init__(self, clazz=Work):
+    def __init__(self, clazz=wpc.model.Work):
         super().__init__(clazz)
 
     def _q(self, clazz=None):
@@ -21,16 +33,16 @@ class WorkRepo(CrudRepo):
         """
         # TODO: implement clazz logic.
         return super(CrudRepo, self)._q()\
-            .filter(Work.customer_id == super()._configurator.customer)\
-            .order_by(Work.begin.desc(), Work.end.asc())
+            .filter(wpc.model.Work.customer_id == super()._configurator.customer)\
+            .order_by(wpc.model.Work.begin.desc(), wpc.model.Work.end.asc())
 
     def getAll(self, *criterion):
         return self._q().all()
 
     def getBetween(self, begin, end):
         return self._q() \
-            .filter(Work.begin >= begin) \
-            .filter(Work.end <= end) \
+            .filter(wpc.model.Work.begin >= begin) \
+            .filter(wpc.model.Work.end <= end) \
             .all()
 
     def getBetweenStart(self, begin, end):
@@ -40,8 +52,8 @@ class WorkRepo(CrudRepo):
         :return: A list of works between ``begin`` and ``end``, ``end`` excluded.
         """
         return self._q() \
-            .filter(Work.begin >= begin) \
-            .filter(Work.begin < end) \
+            .filter(wpc.model.Work.begin >= begin) \
+            .filter(wpc.model.Work.begin < end) \
             .all()
 
     def getProfitGrossBetween(self, begin, end):

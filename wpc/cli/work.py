@@ -1,12 +1,13 @@
+import wpc
 from datetime import date
 
 import click
 from tabulate import tabulate
 
-from wpc.model.work import Work
-from wpc.repository.workrepo import WorkRepo
+# from wpc.model.work import Work
+# from wpc.repository.workrepo import WorkRepo
 
-work_repo = WorkRepo(Work)
+work_repo = wpc.repository.WorkRepo(wpc.model.Work)
 
 
 @click.group()

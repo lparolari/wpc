@@ -1,9 +1,11 @@
+# import wpc
+
 import click
 from datetime import date
-from .client import client
-from .work import work
-from .invoice import invoice
-from .config import config
+# from .client import client
+# from .work import work
+# from .invoice import invoice
+# from .config import config
 
 
 @click.group()
@@ -19,7 +21,4 @@ def cli():
     pass
 
 
-cli.add_command(client)
-cli.add_command(work)
-cli.add_command(invoice)
-cli.add_command(config)
+

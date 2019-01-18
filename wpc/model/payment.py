@@ -1,7 +1,7 @@
 from sqlalchemy import Column, ForeignKey, Integer, Float, String, DateTime
 from sqlalchemy.orm import relationship
 from datetime import datetime
-from wpc.model.base import Base
+from .base import Base
 
 
 class Payment(Base):

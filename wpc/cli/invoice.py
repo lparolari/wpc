@@ -1,6 +1,7 @@
 """
 Entry point for the command line interface.
 """
+import wpc
 
 from calendar import monthrange
 from datetime import date, datetime, time
@@ -10,16 +11,14 @@ from dateutil import parser
 from dateutil.relativedelta import relativedelta
 from tabulate import tabulate
 
-from wpc.model.invoice import Invoice
-from wpc.repository.workrepo import WorkRepo
-from wpc.repository.invoicerepo import InvoiceRepo
-from wpc.config.configurator import Configurator
-from wpc.doc.invoice import InvoiceTexDoc
 
-work_repo = WorkRepo()
-invoice_repo = InvoiceRepo()
-configurator = Configurator()
-doc = InvoiceTexDoc()
+# from wpc.config.configurator import Configurator
+# from wpc.doc.invoice import InvoiceTexDoc
+
+work_repo = wpc.repository.WorkRepo()
+invoice_repo = wpc.repository.InvoiceRepo()
+configurator = wpc.config.Configurator()
+doc = wpc.doc.InvoiceTexDoc()
 
 
 class InvoiceCli:
@@ -163,7 +162,7 @@ def add(explicit):
         click.echo("Invoice not emitted.")
         return
 
-    inv = Invoice.create(begin, end, gross, configurator.customer, prog, reason, tax, net, note)
+    inv = wpc.model.Invoice.create(begin, end, gross, configurator.customer, prog, reason, tax, net, note)
     inv.emitted_at = date_
     invoice_repo.create(inv)
 

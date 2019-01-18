@@ -1,11 +1,11 @@
-from wpc.db.db import Db
-from wpc.config.configurator import Configurator
+import wpc.db
+import wpc.config
 
 
 class BaseRepo(object):
-    _db = Db()
+    _db = wpc.db.Db()
     _clazz = None
-    _configurator = Configurator()
+    _configurator = wpc.config.Configurator()
 
     def __init__(self, clazz):
         """

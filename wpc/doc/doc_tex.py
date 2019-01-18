@@ -1,6 +1,6 @@
 import os
 
-from .doc import Doc
+from wpc.doc import Doc
 
 
 class DocTex(Doc):

@@ -1,6 +1,5 @@
 from num2words import num2words
-
-from .doc_tex import DocTex
+from wpc.doc import DocTex
 
 
 class InvoiceTexDoc(DocTex):
