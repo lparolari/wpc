@@ -4,8 +4,6 @@ Entry point for the command line interface.
 
 import click
 
-# import wpc
-
 from wpc.model.customer import Customer
 from wpc.repository.repo import Repo
 

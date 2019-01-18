@@ -8,5 +8,3 @@ __version__ = '0.1.0'
 
 from wpc import repository, model, db, config, model, doc, cli
 __all__ = ["repository", "model", "db", "doc", "cli", "config"]
-
-# wpc.repository, wpc.model, wpc.db, wpc.doc, wpc.cli, wpc.config,

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# import wpc
+
 from wpc.cli import cli
 
 if __name__ == "__main__":
