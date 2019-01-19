@@ -6,3 +6,4 @@ from .repo import Repo
 from .workrepo import WorkRepo
 
 __all__ = ["BaseRepo", "CrudRepo", "CustomerRepo", "InvoiceRepo", "Repo", "WorkRepo"]
+pass

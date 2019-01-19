@@ -4,14 +4,14 @@ Configurations command line interface.
 
 import click
 
-# from wpc.config.configurator import Configurator
-# from wpc.repository.customerrepo import CustomerRepo
-# from wpc.model.customer import Customer
+from wpc.config.configurator import Configurator
+from wpc.repository.customerrepo import CustomerRepo
+from wpc.model.customer import Customer
 
-import wpc
+# import wpc
 
-configurator = wpc.config.Configurator()
-cust_repo = wpc.repository.CustomerRepo()
+configurator = Configurator()
+cust_repo = CustomerRepo()
 
 
 @click.command()

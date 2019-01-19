@@ -4,12 +4,11 @@ Entry point for the command line interface.
 
 import click
 
-import wpc
+from wpc.model.customer import Customer
+from wpc.repository.repo import Repo
 
-# from wpc.model.customer import Customer
-# from wpc.repository.repo import Repo
+cli_repo = Repo(Customer)
 
-cli_repo = wpc.repository.Repo(wpc.model.Customer)
 
 @click.group()
 def client():
@@ -39,7 +38,7 @@ def show(id_, name):
             clients = [res]
     elif name is not None:
         clients = cli_repo.query()\
-                    .filter(wpc.model.Customer.name.like("%"+name+"%"))\
+                    .filter(Customer.name.like("%"+name+"%"))\
                     .all()
     else:
         clients = cli_repo.query().all()
@@ -66,7 +65,7 @@ def add():
         click.echo("Name cannot be empty")
         return
 
-    new_client = wpc.model.Customer(name=name)
+    new_client = Customer(name=name)
 
     cli_repo.create(new_client)
 

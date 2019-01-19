@@ -1,14 +1,19 @@
-import wpc
 import glob
 import os
 import re
 import subprocess
 from pathlib import Path
 
+# TODO: Qui funziona anche
+#  from wpc.config import Configurator
+#  ma non so quale dei due sia piu' opportuno
+
+from wpc.config.configurator import Configurator
+
 
 class Doc(object):
 
-    _configurator = wpc.config.Configurator()
+    _configurator = Configurator()
 
     # configurations.
     _clear_sources = True

@@ -6,3 +6,4 @@ from .payment import Payment
 from .work import Work
 
 __all__ = ["Customer", "Invoice", "InvoiceWithHours", "Payment", "Work", "Base"]
+pass
