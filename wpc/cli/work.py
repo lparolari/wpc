@@ -89,8 +89,8 @@ def show(day, month, year, all_):
         click.echo("ValueError: " + str(e), err=True)
         return
 
-    headers = ['Customer', 'Date', 'Begin', 'End', 'Hours', 'Registry']
-    rows = [[w.customer.name, w.datestr, w.beginstr, w.endstr, w.hours, w.registry] for w in works]
+    headers = ['Client', 'Date', 'Begin', 'End', 'Hours', 'Registry']
+    rows = [[w.client.name if w.client_id is not None else '', w.datestr, w.beginstr, w.endstr, w.hours, w.registry] for w in works]
 
     click.echo(tabulate(rows, headers))
 
@@ -142,7 +142,8 @@ def edit(id_):
     return
 
 
-work.add_command(between)
+# disable between, not so useful. To be removed.
+# work.add_command(between)
 work.add_command(show)
 work.add_command(add)
 work.add_command(remove)

@@ -1,9 +1,9 @@
-CREATE TABLE "customers" ( 
+CREATE TABLE `customers` ( 
 	`id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 
 	`name` TEXT NOT NULL UNIQUE
 );
 
-CREATE TABLE "clients" (
+CREATE TABLE `clients` (
 	`id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 
 	`name` TEXT NOT NULL,
 	`note` TEXT NULL,
@@ -11,7 +11,7 @@ CREATE TABLE "clients" (
 	FOREIGN KEY(`customer_id`) REFERENCES `customers`(`id`) 
 );
 
-CREATE TABLE "works" (
+CREATE TABLE `works` (
 	`id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 	`date` TEXT NOT NULL,
 	`begin` TEXT NOT NULL,
@@ -42,7 +42,7 @@ CREATE TABLE `payments` (
 	FOREIGN KEY(`invoice_id`) REFERENCES `invoices`(`id`) 
 );
 
-CREATE TABLE "invoices" ( 
+CREATE TABLE `invoices` ( 
 	`id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 
 	`emitted_at` TEXT NOT NULL, 
 	`from_dt` TEXT NOT NULL, 

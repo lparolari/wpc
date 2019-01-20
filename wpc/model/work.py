@@ -20,6 +20,9 @@ class Work(Base):
     customer_id = Column(Integer, ForeignKey("customers.id"))
     customer = relationship("Customer", foreign_keys=[customer_id])
 
+    client_id = Column(Integer, ForeignKey("clients.id"))
+    client = relationship("Client", foreign_keys=[client_id])
+
     @property
     def datestr(self):
         """
