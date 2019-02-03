@@ -23,7 +23,7 @@ class WorkRepo(CrudRepo):
         # TODO: implement clazz logic.
         return super(CrudRepo, self)._q()\
             .filter(Work.customer_id == super()._configurator.customer)\
-            .order_by(Work.begin.desc(), Work.end.asc())
+            .order_by(Work.begin.asc(), Work.end.asc())
 
     def getAll(self, *criterion):
         return self._q().all()
