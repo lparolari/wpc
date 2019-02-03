@@ -3,10 +3,7 @@ import os
 import re
 import subprocess
 from pathlib import Path
-
-# TODO: Qui funziona anche
-#  from wpc.config import Configurator
-#  ma non so quale dei due sia piu' opportuno
+from abc import abstractmethod
 
 from wpc.config.configurator import Configurator
 
@@ -26,6 +23,7 @@ class Doc(object):
         self._debug = self._configurator.debug
         self._clean_sources = self._configurator.clear_sources
 
+    @abstractmethod
     def ext_src(self):
         """
         :return: The file extension of source to compile.
@@ -38,6 +36,7 @@ class Doc(object):
         """
         return 'pdf'
 
+    @abstractmethod
     def template(self):
         """
         :return: The template filename.
@@ -45,6 +44,7 @@ class Doc(object):
         raise NotImplementedError("This method should be implemented")
 
     @property
+    @abstractmethod
     def date_file(self):
         """
         :return: The formatted datetime for filename.
@@ -70,6 +70,7 @@ class Doc(object):
     def _replace_whole(key, val, filedata):
         return re.sub(r'\b%s\b' % re.escape(key), val, filedata)
 
+    @abstractmethod
     def replace(self, filedata):
         """
         Search and replaces the keys with their values in template.

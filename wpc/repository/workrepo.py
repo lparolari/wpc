@@ -1,6 +1,7 @@
 from functools import reduce
 from datetime import datetime, date, timedelta
 from calendar import monthrange
+from pprint import pprint
 
 from .crudrepo import CrudRepo
 from wpc.model import Work
@@ -68,7 +69,7 @@ class WorkRepo(CrudRepo):
             (lambda x, y: x + y),
             map(
                 (lambda x: x.hours),
-                self.getBetweenStart(begin, end + timedelta(days=+1))), 0)
+                self.getBetweenStart(begin, end + timedelta(days=+1))), timedelta(0))
 
     def getHoursProdBetween(self, begin, end):
         """
@@ -80,7 +81,7 @@ class WorkRepo(CrudRepo):
             (lambda x, y: x + y),
             map(
                 (lambda x: x.hours if x.prod is True else timedelta(0)),
-                self.getBetweenStart(begin, end + timedelta(days=+1))), 0)
+                self.getBetweenStart(begin, end + timedelta(days=+1))), timedelta(0))
 
     def getHoursNonProdBetween(self, begin, end):
         """
@@ -92,7 +93,7 @@ class WorkRepo(CrudRepo):
             (lambda x, y: x + y),
             map(
                 (lambda x: x.hours if x.prod is False else timedelta(0)),
-                self.getBetweenStart(begin, end + timedelta(days=+1))), 0)
+                self.getBetweenStart(begin, end + timedelta(days=+1))), timedelta(0))
 
     def getKmBetween(self, begin, end):
         """

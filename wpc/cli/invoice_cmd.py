@@ -130,13 +130,13 @@ def add(explicit):
 
     if explicit:
         date_ = parser.parse(click.prompt("Date", default=date_.strftime('%d/%m/%Y %H:%M')), parserinfo)
-        net = click.prompt("Net", gross, type=float)
-        tax = click.prompt("Tax", gross, type=float)
+        net = click.prompt("Net", net, type=float)
+        tax = click.prompt("Tax", tax, type=float)
         gross = click.prompt("Gross", gross, type=float)
-        hours_tot = click.prompt("Total hours", gross, type=float)
-        hours_p = click.prompt("Production hours", gross, type=float)
-        hours_np = click.prompt("Non production hours", gross, type=float)
-        km = click.prompt("Kilometers", gross, type=int)
+        hours_tot = click.prompt("Total hours", hours_tot, type=float)
+        hours_p = click.prompt("Production hours", hours_p, type=float)
+        hours_np = click.prompt("Non production hours", hours_np, type=float)
+        km = click.prompt("Kilometers", km, type=int)
 
     # display results.
 
@@ -148,9 +148,9 @@ def add(explicit):
         [[
             begin.strftime("%d/%m/%Y"),
             end.strftime("%d/%m/%Y"),
-            str(hours_tot),
-            str(hours_p),
-            str(hours_np),
+            str(hours_tot.total_seconds() / 60 / 60),
+            str(hours_p.total_seconds() / 60 / 60),
+            str(hours_np.total_seconds() / 60 / 60),
             str(km),
             str(gross),
             str(tax),
