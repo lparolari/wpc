@@ -30,18 +30,27 @@ class InvoiceWithHours(Base):
     customer_id = Column(Integer, ForeignKey("customers.id"))
     customer = relationship("Customer", foreign_keys=[customer_id])
 
+    def __repr__(self) -> str:
+        return '<{0}.{1} #{2} :: net:{3}>'.format(self.__module__, type(self).__name__, self.id, self.net)
+
     @property
     def emitted_at_str(self):
+        """
+        :return: A string representation for *emitted_at* date.
+        """
         return self.emitted_at.strftime("%d/%m/%Y %H:%M")
 
     @property
     def from_dt_str(self):
+        """
+        :return: A string representation for *from_dt* date.
+        """
         return self.from_dt.strftime("%d/%m/%Y %H:%M")
 
     @property
     def to_dt_str(self):
+        """
+        :return: A string representation for *to_dt* date.
+        """
         return self.to_dt.strftime("%d/%m/%Y %H:%M")
-
-    def __repr__(self) -> str:
-        return '<{0}.{1}:  {2}>'.format(self.__module__, type(self).__name__, self.id)
 

@@ -11,3 +11,6 @@ class Client(Base):
 
     customer_id = Column(Integer, ForeignKey("customers.id"))
     customer = relationship("Customer", foreign_keys=[customer_id])
+
+    def __repr__(self) -> str:
+        return '<{0}.{1} #{2} :: name:{3}>'.format(self.__module__, type(self).__name__, self.id, self.name)
