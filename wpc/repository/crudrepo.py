@@ -18,4 +18,4 @@ class CrudRepo(BaseRepo):
         return self._q().filter(Customer.id == id_).first()
 
     def getAll(self, *criterion):
-        return self._q().filter(criterion).all()
+        return self._q().filter(*criterion).all()
