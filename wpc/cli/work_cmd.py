@@ -3,7 +3,7 @@ import datetime
 import time
 from datetime import date
 from pprint import pprint
-
+import csv
 import click
 from dateutil import parser
 from tabulate import tabulate
@@ -12,10 +12,11 @@ from wpc.model.work import Work
 from wpc.model.customer import Customer
 from wpc.repository.workrepo import WorkRepo
 from wpc.repository.customerrepo import CustomerRepo
-import csv
+from wpc.config.configurator import Configurator
 
 work_repo = WorkRepo(Work)
 customer_repo = CustomerRepo(Customer)
+configurator = Configurator()
 
 
 class WorkCli:
@@ -27,18 +28,6 @@ def work():
     """
     Work's commands group.
     """
-    return
-
-
-@click.command()
-@click.argument('begin', type=str)  # help='Filter work from date.')
-@click.argument('end', type=str)  # help='Filter work to date.')
-def between(begin, end):
-    # parse begin date, parse end date
-    # filter
-
-    raise NotImplementedError
-
     return
 
 
@@ -112,7 +101,7 @@ def show(day, month, year, all_):
 @click.command()
 def add(import_file):
     """
-    Insert a client into the system.
+    Inserts work.
     """
 
     raise NotImplementedError
@@ -122,32 +111,20 @@ def add(import_file):
 @click.argument('id_', type=int, required=True)
 def remove(id_):
     """
-    Removes a client, i.e., marks it as "obsolete". This does not remove the client effectively
-    from the system because the data related to it.
-
-    :param id_: The id of the client.
+    Remove work.
+    :param id_: A work id.
     """
-
-    if click.confirm("Are you sure?"):
-        pass
-
-    return
+    raise NotImplementedError
 
 
 @click.command()
 @click.argument('id_', type=int, required=True)
 def edit(id_):
     """
-    Edit a client.
-    :param id_: The id of the client.
+    Edit work details.
+    :param id_: A work id.
     """
-
     raise NotImplementedError
-
-    prev_name = "test prev name"  # TODO: take this from sources.
-    name = click.prompt("Name?", default=prev_name, type=str)
-
-    return
 
 
 @click.command()
@@ -155,10 +132,10 @@ def edit(id_):
 @click.option('--import', 'operation', flag_value='import')
 @click.option('--file-type', type=click.Choice(['csv']), default='csv')
 @click.option('--file', type=click.Path())
-@click.argument('customer_id', type=int, required=True)
-def data(operation, file_type, file, customer_id):
+@click.option('--ignore-empty-fields/--no-ignore-empty-fields', default=False)
+def data(operation, file_type, file, ignore_empty_fields):
     """
-    Import or export w data.
+    Import or export works.
     """
 
     # TODO: this operations should be encapsulated out cli package.
@@ -175,19 +152,23 @@ def data(operation, file_type, file, customer_id):
                                 #parserinfo = parser.parserinfo(dayfirst=True)
 
                                 w = Work()
-                                w.customer = customer_repo.find(customer_id)
+                                w.customer = customer_repo.find(configurator.customer)
                                 w.date = parser.parse(row[0], parser.parserinfo(dayfirst=True))
-                                w.begin = datetime.datetime.strptime(row[1], "%H:%M") if row[1] is not '' else None
-                                w.begin = w.begin.replace(year=w.date.year, month=w.date.month, day=w.date.day)
-                                w.end = datetime.datetime.strptime(row[2], "%H:%M") if row[2] is not '' else None
-                                w.end = w.end.replace(year=w.date.year, month=w.date.month, day=w.date.day)
                                 # minutes automatically calculated from wpc.
-                                # w.minutes = sum(map(lambda x, y: x * y, map(int, row[3].split(".")), [60, 1, 0])) if row[3] is not '' else None
+                                # minutes = sum(map(lambda x, y: x * y, map(int, row[3].split(".")), [60, 1, 0])) if row[3] is not '' else None
+                                try:
+                                    minutes = datetime.datetime.strptime(row[3], "%H.%M.%S")
+                                except ValueError:
+                                    minutes = datetime.datetime.strptime(row[3], "%H:%M")
+                                w.begin = datetime.datetime.strptime(row[1], "%H:%M") if row[1] is not '' else w.date.replace(hour=0, minute=0, second=0)
+                                w.begin = w.begin.replace(year=w.date.year, month=w.date.month, day=w.date.day)
+                                w.end = datetime.datetime.strptime(row[2], "%H:%M") if row[2] is not '' else w.date.replace(hour=minutes.hour, minute=minutes.minute, second=0)
+                                w.end = w.end.replace(year=w.date.year, month=w.date.month, day=w.date.day)
                                 w.km = row[4] if row[4] is not '' else 0
                                 w.prod = False if row[5] == 'FALSE' else True
                                 w.add = row[6] if row[6] is not '' else None
                                 w.note = row[7] if row[7] is not '' else None
-                                w.registry = row[8] if row[8] is not '' else None
+                                w.registry = row[8] if row[8] is not '' else None if ignore_empty_fields is False else ''
                                 w.price = 12
 
                                 work_repo.create(w)
