@@ -11,44 +11,44 @@ cli_repo = Repo(Customer)
 
 
 @click.group()
-def client():
+def customer():
     """
-    Client's commands group.
+    Customer commands group.
     """
     return
 
 
 @click.command()
-@click.option('--id', 'id_', type=int, help='The id of the client.')
-@click.option('--name', type=str, help='The name of the client.')
+@click.option('--id', 'id_', type=int, help='The id of the customer.')
+@click.option('--name', type=str, help='The name of the customer.')
 def show(id_, name):
     """
-    Shows registered clients. If no filter is specified shows all clients.
+    Shows registered customer. If no filter is specified shows all customers.
 
-    :param id_: The id of the client.
-    :param name: The name of the client.
+    :param id_: The id of the customer.
+    :param name: The name of the customer.
     """
 
-    clients = []
+    customers = []
 
     # Find results.
     if id_ is not None:
         res = cli_repo.find(id_)
         if res is not None:
-            clients = [res]
+            customers = [res]
     elif name is not None:
-        clients = cli_repo.query()\
+        customers = cli_repo.query()\
                     .filter(Customer.name.like("%"+name+"%"))\
                     .all()
     else:
-        clients = cli_repo.query().all()
+        customers = cli_repo.query().all()
 
     # Print results.
-    if len(clients) > 0:
-        click.echo("Clients: ")
-        [click.echo(" {}, {}".format(x.id, x.name)) for x in clients]
+    if len(customers) > 0:
+        click.echo("Customers: ")
+        [click.echo(" {}, {}".format(x.id, x.name)) for x in customers]
     else:
-        click.echo("No clients found.")
+        click.echo("No customers found.")
 
     return
 
@@ -56,7 +56,7 @@ def show(id_, name):
 @click.command()
 def add():
     """
-    Insert a client into the system.
+    Insert a customer into the system.
     """
 
     name = click.prompt("Name", type=str)
@@ -65,9 +65,9 @@ def add():
         click.echo("Name cannot be empty")
         return
 
-    new_client = Customer(name=name)
+    new_customer = Customer(name=name)
 
-    cli_repo.create(new_client)
+    cli_repo.create(new_customer)
 
     click.echo("Added %s" % name)
 
@@ -78,16 +78,16 @@ def add():
 @click.argument('id_', type=int, required=True)
 def remove(id_):
     """
-    Removes a client, i.e., marks it as "obsolete". This does not remove the client effectively
+    Removes a customer, i.e., marks it as "obsolete". This does not remove the customer effectively
     from the system because the data related to it.
 
-    :param id_: The id of the client.
+    :param id_: The id of the customer.
     """
-    # TODO: implement obsolete client.
+    # TODO: implement obsolete customer.
 
     c = cli_repo.find(id_)
     if c is None:
-        click.echo("Client with id %s not found." % id_)
+        click.echo("Customer with id %s not found." % id_)
         return
 
     if click.confirm("Are you sure?"):
@@ -103,13 +103,13 @@ def remove(id_):
 @click.argument('id_', type=int, required=True)
 def edit(id_):
     """
-    Edit a client.
-    :param id_: The id of the client.
+    Edit a customer.
+    :param id_: The id of the customer.
     """
 
     c = cli_repo.find(id_)
     if c is None:
-        click.echo("Client with id %s not found." % id_)
+        click.echo("Customer with id %s not found." % id_)
         return
 
     name = click.prompt("Name?", default=c.name, type=str)
@@ -122,7 +122,7 @@ def edit(id_):
     return
 
 
-client.add_command(show)
-client.add_command(add)
-client.add_command(remove)
-client.add_command(edit)
+customer.add_command(show)
+customer.add_command(add)
+customer.add_command(remove)
+customer.add_command(edit)

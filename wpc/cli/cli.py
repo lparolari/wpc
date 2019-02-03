@@ -2,16 +2,15 @@
 
 import click
 
-from datetime import date
 # from .client import client
 # from .work import work
 # from .invoice import invoice
 # from .config import config
-from wpc.cli import client, work, invoice, config
+from wpc.cli import customer, work, invoice, config
 
 
 @click.group()
-def cli():
+def cli_commands():
     """
     Command line interface for wpc.
 
@@ -23,10 +22,10 @@ def cli():
     pass
 
 
-cli.add_command(client)
-cli.add_command(work)
-cli.add_command(invoice)
-cli.add_command(config)
+cli_commands.add_command(customer)
+cli_commands.add_command(work)
+cli_commands.add_command(invoice)
+cli_commands.add_command(config)
 
 
 
