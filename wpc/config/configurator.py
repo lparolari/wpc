@@ -20,7 +20,7 @@ class Configurator(object):
     SEC_DOC = 'doc'
     OPT_CLEAR_SOURCES = 'clear_src'
 
-    def __init__(self) -> None:
+    def __init__(self):
         super().__init__()
         self._cfg = ConfigParser()
         self._cfg.read(self.config_filename)

@@ -1,6 +1,7 @@
 """
 Configurations command line interface.
 """
+from pprint import pprint
 
 import click
 
@@ -27,9 +28,16 @@ def config(customer, debug):
     elif debug is not None:
         _set_debug(debug)
     else:
-        click.echo("No operations performed.")
+        _show_all()
 
     return
+
+
+def _show_all():
+    click.echo("Current configuration:")
+    click.echo(f"\tcustomer = {configurator.customer}")
+    click.echo(f"\toil_cost_litre = {configurator.oil_cost_litre}")
+    click.echo(f"\tkm_litre = {configurator.km_litre}")
 
 
 def _set_customer(c_name_or_id):
@@ -37,13 +45,14 @@ def _set_customer(c_name_or_id):
     if c_name_or_id.isdigit():
         customer = cust_repo.find(c_name_or_id)
     else:
-        customer = cust_repo.getAll(Customer.name == '%' + c_name_or_id + '%')
+        customers = cust_repo.getAll(Customer.name.ilike('%' + c_name_or_id + '%'))
+        customer = next(iter(customers or []), None)  # get first of None.
 
     if customer is None:
-        click.echo("No customer with id or name %s found." % c_name_or_id)
+        click.echo("No customer with id or name \"%s\" found." % c_name_or_id)
     else:
         configurator.customer = str(customer.id)
-        click.echo("Customer %s set." % customer.name)
+        click.echo("Customer \"%s\" set." % customer.name)
 
 
 def _set_debug(is_debug):
