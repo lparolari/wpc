@@ -1,13 +1,25 @@
 # import wpc
+import datetime
+import time
 from datetime import date
+from pprint import pprint
 
 import click
+from dateutil import parser
 from tabulate import tabulate
 
 from wpc.model.work import Work
+from wpc.model.customer import Customer
 from wpc.repository.workrepo import WorkRepo
+from wpc.repository.customerrepo import CustomerRepo
+import csv
 
 work_repo = WorkRepo(Work)
+customer_repo = CustomerRepo(Customer)
+
+
+class WorkCli:
+    pass
 
 
 @click.group()
@@ -19,8 +31,8 @@ def work():
 
 
 @click.command()
-@click.argument('begin', type=str) # help='Filter work from date.')
-@click.argument('end', type=str) # help='Filter work to date.')
+@click.argument('begin', type=str)  # help='Filter work from date.')
+@click.argument('end', type=str)  # help='Filter work to date.')
 def between(begin, end):
     # parse begin date, parse end date
     # filter
@@ -98,16 +110,12 @@ def show(day, month, year, all_):
 
 
 @click.command()
-def add():
+def add(import_file):
     """
     Insert a client into the system.
     """
 
-    # name = click.prompt("Name", type=str)
-
     raise NotImplementedError
-
-    return
 
 
 @click.command()
@@ -142,9 +150,59 @@ def edit(id_):
     return
 
 
+@click.command()
+@click.option('--export', 'operation', flag_value='export', default=True)
+@click.option('--import', 'operation', flag_value='import')
+@click.option('--file-type', type=click.Choice(['csv']), default='csv')
+@click.option('--file', type=click.Path())
+@click.argument('customer_id', type=int, required=True)
+def data(operation, file_type, file, customer_id):
+    """
+    Import or export w data.
+    """
+
+    # TODO: this operations should be encapsulated out cli package.
+    if operation == 'import':
+        if file_type == 'csv':
+            if file is not None:
+                with open(file, 'r') as csv_file:
+                    csv_reader = csv.reader(csv_file, delimiter=',')
+                    line_count = 0
+                    for row in csv_reader:
+                        if row[0] is not '':
+                            if line_count >= 2:
+
+                                #parserinfo = parser.parserinfo(dayfirst=True)
+
+                                w = Work()
+                                w.customer = customer_repo.find(customer_id)
+                                w.date = parser.parse(row[0], parser.parserinfo(dayfirst=True))
+                                w.begin = datetime.datetime.strptime(row[1], "%H:%M") if row[1] is not '' else None
+                                w.begin = w.begin.replace(year=w.date.year, month=w.date.month, day=w.date.day)
+                                w.end = datetime.datetime.strptime(row[2], "%H:%M") if row[2] is not '' else None
+                                w.end = w.end.replace(year=w.date.year, month=w.date.month, day=w.date.day)
+                                # minutes automatically calculated from wpc.
+                                # w.minutes = sum(map(lambda x, y: x * y, map(int, row[3].split(".")), [60, 1, 0])) if row[3] is not '' else None
+                                w.km = row[4] if row[4] is not '' else 0
+                                w.prod = False if row[5] == 'FALSE' else True
+                                w.add = row[6] if row[6] is not '' else None
+                                w.note = row[7] if row[7] is not '' else None
+                                w.registry = row[8] if row[8] is not '' else None
+                                w.price = 12
+
+                                work_repo.create(w)
+
+                            line_count += 1
+
+                    print(f'Processed {line_count} lines.')
+
+    return
+
+
 # disable between, not so useful. To be removed.
 # work.add_command(between)
 work.add_command(show)
 work.add_command(add)
 work.add_command(remove)
 work.add_command(edit)
+work.add_command(data)
