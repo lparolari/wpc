@@ -40,7 +40,7 @@ def invoice():
 @click.option('--date', type=str, help='The date of the invoice.')
 def show(id_, date):
     """
-    Shows registered clients. If no filter is specified shows all clients.
+    Show invoices. If no filter specified all invoices are shown.
 
     :param id_: The id of the invoice.
     :param date: The date of the invoice.
@@ -88,10 +88,11 @@ def show(id_, date):
 
 
 @click.command()
-@click.option('-e/--explicit', 'explicit', is_flag=True, help='Define all data for the invoice and show calculated as defaults.')
+@click.option('-e/--explicit', 'explicit', is_flag=True,
+              help='Define all data for the invoice and show calculated as defaults.')
 def add(explicit):
     """
-    Insert an invoice into the system.
+    Insert an invoice.
     """
 
     # calculate begin and end of a month ago.
@@ -186,10 +187,9 @@ def add(explicit):
 @click.argument('id_', type=int, required=True)
 def remove(id_):
     """
-    Removes an invoices, i.e., marks it as "obsolete". This does not remove the client effectively
-    from the system because the data related to it.
+    Remove an invoice.
 
-    :param id_: The id of the client.
+    :param id_: The id of the invoice.
     """
 
     raise NotImplementedError
@@ -212,8 +212,8 @@ def remove(id_):
 @click.argument('id_', type=int, required=True)
 def edit(id_):
     """
-    Edit a client.
-    :param id_: The id of the client.
+    Edit an invoice.
+    :param id_: The id of the invoice.
     """
 
     raise NotImplementedError

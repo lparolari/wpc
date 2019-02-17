@@ -1,15 +1,9 @@
-"""
-Configurations command line interface.
-"""
-from pprint import pprint
-
 import click
 
 from wpc.config.configurator import Configurator
-from wpc.repository.customerrepo import CustomerRepo
 from wpc.model.customer import Customer
+from wpc.repository.customerrepo import CustomerRepo
 
-# import wpc
 
 configurator = Configurator()
 cust_repo = CustomerRepo()
@@ -20,7 +14,7 @@ cust_repo = CustomerRepo()
 @click.option('--debug/--no-debug', help="Print debug stuff", default=None)
 def config(customer, debug):
     """
-    Configure and setup the application.
+    Configure some parameters and customize the application.
     """
 
     if customer is not None:

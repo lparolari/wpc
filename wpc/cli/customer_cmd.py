@@ -1,11 +1,8 @@
-"""
-Entry point for the command line interface.
-"""
-
 import click
 
 from wpc.model.customer import Customer
 from wpc.repository.repo import Repo
+
 
 cli_repo = Repo(Customer)
 
@@ -13,7 +10,7 @@ cli_repo = Repo(Customer)
 @click.group()
 def customer():
     """
-    Customer commands group.
+    Customer's commands group.
     """
     return
 
@@ -23,7 +20,7 @@ def customer():
 @click.option('--name', type=str, help='The name of the customer.')
 def show(id_, name):
     """
-    Shows registered customer. If no filter is specified shows all customers.
+    Show customers.
 
     :param id_: The id of the customer.
     :param name: The name of the customer.
@@ -78,7 +75,7 @@ def add():
 @click.argument('id_', type=int, required=True)
 def remove(id_):
     """
-    Removes a customer, i.e., marks it as "obsolete". This does not remove the customer effectively
+    Remove a customer, i.e., marks it as "obsolete". This does not remove the customer effectively
     from the system because the data related to it.
 
     :param id_: The id of the customer.

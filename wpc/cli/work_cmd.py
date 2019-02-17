@@ -26,7 +26,7 @@ class WorkCli:
 @click.group()
 def work():
     """
-    Work's commands group.
+    Work's command group.
     """
     return
 
@@ -38,7 +38,7 @@ def work():
 @click.option('--all', 'all_', is_flag=True, help='Show all.')
 def show(day, month, year, all_):
     """
-    Shows registered works.
+    Show works.
 
     By default, shows works from this month. You can use the ``--all`` option to show all registered works.
     You can combine other options in this way:
@@ -99,9 +99,9 @@ def show(day, month, year, all_):
 
 
 @click.command()
-def add(import_file):
+def add():
     """
-    Inserts work.
+    Insert work.
     """
 
     raise NotImplementedError
