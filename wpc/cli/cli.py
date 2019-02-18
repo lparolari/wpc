@@ -6,7 +6,7 @@ import click
 # from .work import work
 # from .invoice import invoice
 # from .config import config
-from wpc.cli import customer, work, invoice, config
+from wpc.cli import customer, work, invoice, config, payment
 
 
 @click.group()
@@ -26,6 +26,7 @@ cli_commands.add_command(customer)
 cli_commands.add_command(work)
 cli_commands.add_command(invoice)
 cli_commands.add_command(config)
+cli_commands.add_command(payment)
 
 
 

@@ -7,9 +7,12 @@ from .invoice_cmd import invoice
 from .work_cmd import work  # , between as work_between, show as work_show, add as work_add, remove as work_remove
 # from .work import edit  # as work_edit
 
-from .cli import cli_commands
+from .payment_cmd import payment
 
-__all__ = ["cli", "customer", "config", "invoice", "work"
+from .cli import cli_commands  # must be last import.
+
+
+__all__ = ["cli", "customer", "config", "invoice", "work", "payment"
            # "work_add", "work_between", "work_edit", "work_remove", "work_show",
            # "client_add", "client_edit", "client_remove", "client_show"
            ]

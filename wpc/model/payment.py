@@ -29,6 +29,19 @@ class Payment(Base):
     def __repr__(self) -> str:
         return '<{0}.{1} #{2} :: net:{3}>'.format(self.__module__, type(self).__name__, self.id, self.net)
 
+    @staticmethod
+    def create(customer_id, paid_at, gross, tax, net, invoice, note=None):
+        x = Payment()
+        x.customer_id = customer_id
+        x.paid_at = paid_at
+        x.gross = gross
+        x.tax = tax
+        x.net = net
+        x.note = note
+        x.invoice = invoice
+        x.invoice_id = invoice.id if invoice is not None else None
+        return x
+
     @property
     def paid_at_str(self):
         """

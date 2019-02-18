@@ -8,8 +8,8 @@ from wpc.model import Work
 from wpc.config import Configurator
 
 
+# noinspection PyPep8Naming
 class WorkRepo(CrudRepo):
-
     _configurator = Configurator()
 
     def __init__(self, clazz=Work):
@@ -21,8 +21,8 @@ class WorkRepo(CrudRepo):
         :return: The prepared query object with new filters.
         """
         # TODO: implement clazz logic.
-        return super(CrudRepo, self)._q()\
-            .filter(Work.customer_id == super()._configurator.customer)\
+        return super(CrudRepo, self)._q() \
+            .filter(Work.customer_id == super()._configurator.customer) \
             .order_by(Work.begin.asc(), Work.end.asc())
 
     def getAll(self, *criterion):
@@ -161,7 +161,9 @@ class WorkRepo(CrudRepo):
         :param end: Upper bound starting date (included in search).
         :return: The tax for works between ``begin`` and ``end``.
         """
-        return (self.getProfitGrossBetween(begin, end) + self.getKmBetween(begin, end) / self._configurator.km_litre * self._configurator.oil_cost_litre) / 100 * 20
+        return (self.getProfitGrossBetween(begin, end)
+                + self.getKmBetween(begin,
+                                    end) / self._configurator.km_litre * self._configurator.oil_cost_litre) / 100 * 20
 
     def getTotalGrossBetween(self, begin, end):
         """
@@ -169,7 +171,8 @@ class WorkRepo(CrudRepo):
         :param end: Upper bound starting date (included in search).
         :return: The gross for works between ``begin`` and ``end``.
         """
-        return self.getProfitGrossBetween(begin, end) + self.getKmBetween(begin, end) / self._configurator.km_litre * self._configurator.oil_cost_litre
+        return (self.getProfitGrossBetween(begin, end)
+                + self.getKmBetween(begin, end) / self._configurator.km_litre * self._configurator.oil_cost_litre)
 
     def getTotalNetBetween(self, begin, end):
         """
