@@ -45,7 +45,7 @@
 \usepackage{graphicx} % Required for including pictures
 
 \usepackage[T1]{fontenc} % Output font encoding for international characters
-\usepackage[latin1]{inputenc} % Required for inputting international characters
+\usepackage[utf8]{inputenc} % Required for inputting international characters
 \usepackage{gfsdidot} % Use the GFS Didot font: http://www.tug.dk/FontCatalogue/gfsdidot/
 \usepackage{microtype} % Improves typography
 
@@ -207,10 +207,10 @@
 %	LETTER CONTENT
 %----------------------------------------------------------------------------------------
 
-\opening{OPENINGGRADE RECIPIENTNAME}
+\opening{OPENINGGRADE RECIPIENTNAME} % Spett.le Nome Cognome
 
 Il sottoscritto Luca Parolari dichiara di ricevere la somma lorda di euro
-GROSSWORDS ($\euro GROSS$), per l'attività occasionale di INVOICEREASON.
+GROSSWORDS ($\euro GROSS$), per l’attività occasionale di INVOICEREASON.
 
 \begin{center}
 \begin{tabularx}{300pt}{|X|r|}
@@ -225,9 +225,9 @@ GROSSWORDS ($\euro GROSS$), per l'attività occasionale di INVOICEREASON.
 Dichiara inoltre sotto la propria responsabilità, che la prestazione resa alla
 ditta ha carattere del tutto occasionale, non svolgendo il sottoscritto
 prestazione di lavoro autonomo con carattere di abitualità; di non avere fruito
-nell'anno ai fini contributivi, della franchigia di \euro{} 5.000 prevista dall'art. 44
+nell’anno ai fini contributivi, della franchigia di \euro{} 5.000 prevista dall’art. 44
 del D.L. 30 settembre 2003, n. 269; di non essere soggetto al regime Iva a
-norma dell'ex art. 5, comma 2, D.P.R. 633/72
+norma dell’ex art. 5, comma 2, D.P.R. 633/72
 
 \closing{In fede,}
 

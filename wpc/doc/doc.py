@@ -88,7 +88,7 @@ class Doc(object):
         for key, val in self._data.items():
             # print(key + ": " + str(val))
             if val is None:
-                raise ValueError('Cannot generate a document: %s is None' % key)
+                raise ValueError('Cannot generate document: %s is None' % key)
 
         home_path = str(Path.home())
         out_dir = os.path.join(home_path, 'wpc-invoices')

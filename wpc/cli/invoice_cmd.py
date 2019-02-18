@@ -169,6 +169,8 @@ def add(explicit):
     inv.emitted_at = date_
     invoice_repo.create(inv)
 
+    click.echo("Invoice registered.")
+
     doc.set_invoice_from(inv)
     doc.date = date_
 
@@ -176,7 +178,7 @@ def add(explicit):
     click.echo()
 
     if ret is False:
-        click.echo("Error occurred. To debug the application set the debug flag with config command.")
+        click.echo("Error occurred: could not generate invoice file.")
     else:
         click.echo("Invoice emitted. Locate it at %s" % ret)
 

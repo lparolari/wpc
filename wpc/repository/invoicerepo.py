@@ -14,7 +14,7 @@ class InvoiceRepo(CrudRepo):
 
         if clazz is None:
             q = q.filter(Invoice.customer_id == super()._configurator.customer)
-            q = q.order_by(Invoice.emitted_at.desc(), Invoice.from_dt.desc())
+            q = q.order_by(Invoice.emitted_at.asc(), Invoice.from_dt.asc())  # asc useful in CLI apps.
 
         return q
 
