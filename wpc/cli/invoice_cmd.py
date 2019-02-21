@@ -115,7 +115,8 @@ def add(explicit):
         raise ValueError("From date cannot be greater than end date")
 
     reason = click.prompt("Reason", default="assistenza presso Vostri clienti")
-    prog = click.prompt("Progressive", default=invoice_repo.getNextProg())
+    prog = click.prompt("Progressive (0 for report only)", default=invoice_repo.getNextProg())
+    prog = prog if prog != 0 else None
     note = click.prompt("Note", default="")
 
     note = (note if note != "" else None)
@@ -161,6 +162,10 @@ def add(explicit):
 
     click.echo()
 
+    generate_invoice_file = False
+    if prog is not None and not click.confirm("Generate invoice file?"):
+        generate_invoice_file = True
+
     if not click.confirm("Emit invoice?"):
         click.echo("Invoice not emitted.")
         return
@@ -171,16 +176,18 @@ def add(explicit):
 
     click.echo("Invoice registered.")
 
-    doc.set_invoice_from(inv)
-    doc.date = date_
+    # if prog is None only report is generated!
+    if generate_invoice_file and prog is not None:
+        doc.set_invoice_from(inv)
+        doc.date = date_
 
-    ret = doc.generate()
-    click.echo()
+        ret = doc.generate()
+        click.echo()
 
-    if ret is False:
-        click.echo("Error occurred: could not generate invoice file.")
-    else:
-        click.echo("Invoice emitted. Locate it at %s" % ret)
+        if ret is False:
+            click.echo("Error occurred: could not generate invoice file.")
+        else:
+            click.echo("Invoice emitted. Locate it at %s" % ret)
 
     return
 

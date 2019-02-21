@@ -20,7 +20,7 @@ class InvoiceWithHours(Base):
     to_dt = Column(DateTime, nullable=False)
 
     reason = Column(String, nullable=False)
-    prog = Column(Integer, nullable=False)
+    prog = Column(Integer)
 
     note = Column(String)
 
