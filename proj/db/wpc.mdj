@@ -660,7 +660,7 @@
 							"top": 16,
 							"width": 281,
 							"height": 62,
-							"text": "WPC, database scheme."
+							"text": "WPC, database scheme"
 						},
 						{
 							"_type": "ERDEntityView",
@@ -1365,7 +1365,7 @@
 							"top": 48,
 							"width": 201,
 							"height": 25,
-							"text": "Rev. 2019/01/20, ver. 0.3.0"
+							"text": "Rev. 2019/01/20, ver. 0.3.1"
 						}
 					]
 				},
@@ -1705,7 +1705,7 @@
 						"$ref": "AAAAAAFmRhZooRs49j0="
 					},
 					"name": "Invoice",
-					"documentation": "Invoice: an amount of hours and their price in order to let them be paid, with some fiscal things.",
+					"documentation": "Register an invoice (i.e., an amount of hours and their price in order to let them be paid, with some fiscal things) or a report (i.e., the invoice without fiscal things). For registering a report the progressive should be unspecified while for registering an invoice progressive must specified as the next integer of the last invoice registered.",
 					"columns": [
 						{
 							"_type": "ERDColumn",
@@ -1781,7 +1781,9 @@
 								"$ref": "AAAAAAFmRjna6Bxwk60="
 							},
 							"name": "prog",
-							"type": "integer"
+							"documentation": "The progressive of the invocie. The progressive can be null when a report is registerd.",
+							"type": "integer",
+							"nullable": true
 						},
 						{
 							"_type": "ERDColumn",
@@ -1979,6 +1981,7 @@
 							}
 						}
 					],
+					"documentation": "A store of clients that can be referenced for linking them with the work done for them.",
 					"columns": [
 						{
 							"_type": "ERDColumn",
