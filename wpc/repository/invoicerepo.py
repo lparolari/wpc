@@ -1,7 +1,9 @@
+from pprint import pprint
+
 from .crudrepo import CrudRepo
 from wpc.model import Invoice, InvoiceWithHours
-
-from sqlalchemy import func, and_
+from datetime import datetime
+from sqlalchemy import func, and_, extract
 
 
 class InvoiceRepo(CrudRepo):
@@ -41,6 +43,6 @@ class InvoiceRepo(CrudRepo):
             .all()
 
     def getNextProg(self):
-        max_ = self._q().with_entities(func.max(Invoice.prog).label('max')).first().max
+        max_ = self._q(Invoice).filter(extract('year', Invoice.emitted_at) == datetime.today().year).with_entities(func.max(Invoice.prog).label('max')).first().max
         max_ = max_ if max_ is not None else 0
         return max_ + 1
