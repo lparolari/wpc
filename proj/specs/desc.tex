@@ -1,0 +1,38 @@
+\input{util/subdoc.begin}
+
+%%%%%%%%%%%%%%%%%%
+% WPC
+\section{WPC}
+
+\subsection{What is}
+\textit{Work Pay Calculator} has the objective to simplify the \textbf{management} of the work done in terms of hour, cost and profits. In other hands WPC is an application that smartly stores hours done for a work and allows to automatize the process of hours pay calculation and \textit{occasional performance}\footnote{This is an italian fiscal document that certifies work for someone.} emission.
+
+\subsection{What is not}
+WPC is not a management tool for fiscal things, futhermore, for now, it's not an hour marker in terms of real-time start and stop counter (see \ref{subsec:enhancements}).
+
+\subsection{Features}
+\begin{enumerate}[label=(\alph*)]
+\item Light-weight, simple and easy to use.
+\item Easily syncronizable with cloud services: only the executable and the data storage is needed. Data storage needs to be syncronized only if the SQLite engine is chosed.
+\item CLI inteface, in order to focus the objective to the application functionalities.
+\item Highly configurable: personalize environment variables and achieve your needs.
+\item Default answer configuration. Lot of configurable default answers, avoing boring data typing.
+\end{enumerate}
+
+\subsection{Examples}
+\textbf{Scenario 1}: today I've worked for a customer 6 hours: 3 of coding, 1 learing a new technology and 2 to publish the work online. What the hell, I have to register this things before I forget them.
+
+No problem, open WPC and insert a new work in a way like this:
+
+\begin{lstlisting}
+wpc> work: today 14:30 17:30 true
+wpc> work: km? [0]: 
+wpc> work: add? [0]: 
+wpc> work: registry? [General work]: I've coded the
+pinco pallo project
+wpc> Work inserted successfully!
+\end{lstlisting}
+
+And you can repeate this procedure any time you want to increase the datail of hours done in this day.
+
+\input{util/subdoc.end}

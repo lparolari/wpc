@@ -1,0 +1,2 @@
+WPC is a light-weight, highly configurable and easy to use library with a minimal CLI, with the objective of manage your work (hours and costs) and emit invoices.\\
+This document contains a brief, requirements and design project for the library.

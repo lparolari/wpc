@@ -1,0 +1,4 @@
+version=0.6.0
+typesetter=pdflatex
+steps=texpdf
+root=/media/lparolari/Omega/dev/lparolari/wpc/proj/specs/wpc.tex
