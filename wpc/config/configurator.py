@@ -11,6 +11,7 @@ class Configurator(object):
     OPT_CUSTOMER_ID = 'customer.id'
     OPT_KM_LITRE = 'km_litre'
     OPT_OIL_COST_LITRE = 'oil_cost_litre'
+    OPT_PRICE = 'price'
 
     SEC_COMMON = 'common'
     OPT_DATEFORMAT = 'dateformat'
@@ -112,6 +113,14 @@ class Configurator(object):
         self.set(self.SEC_SESSION, self.OPT_OIL_COST_LITRE, str(value))
 
     @property
+    def price(self):
+        return self.get(self.SEC_SESSION, self.OPT_PRICE, type=float)
+
+    @price.setter
+    def price(self, value):
+        self.set(self.SEC_SESSION, self.OPT_PRICE, str(value))
+
+    @property
     def config_filename(self):
         return self.DEFAULT_CONFIG_FILENAME
 
@@ -137,6 +146,8 @@ class Configurator(object):
             self.km_litre = str(15)
         if force or not self._cfg.has_option(self.SEC_SESSION, self.OPT_OIL_COST_LITRE):
             self.oil_cost_litre = str(1.5)
+        if force or not self._cfg.has_option(self.SEC_SESSION, self.OPT_PRICE):
+            self.price = str(12.0)
         # OPT_CUSTOMER_ID is intentionally not initialized by default.
 
     def _do_section(self, value):
