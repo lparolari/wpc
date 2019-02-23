@@ -1,3 +1,6 @@
+import os
+from pathlib import Path
+
 from num2words import num2words
 from wpc.doc import DocTex
 
@@ -64,6 +67,19 @@ class InvoiceTexDoc(DocTex):
         RECIPIENT_FISCAL_CODE: 'IT 04030320982',
         RECIPIENT_NAME: 'Antonio Toselli',
     }
+
+    def template(self):
+        return os.path.join(os.getcwd(), 'res', 'templates', 'tex', 'default', 'invoice', 'invoice.tex')
+
+    @property
+    def file_path(self):
+        home_path = str(Path.home())
+        out_dir = os.path.join(home_path, 'wpc-invoices')
+        return out_dir
+
+    @property
+    def file_name(self):
+        return 'invoice_' + self.date_file
 
     @property
     def gross(self):

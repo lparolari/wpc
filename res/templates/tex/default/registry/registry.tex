@@ -1,0 +1,51 @@
+\documentclass{article}
+
+\usepackage[a4paper,margin=1in,landscape]{geometry}
+\usepackage{blindtext}
+\usepackage{tikz}
+\usepackage{tabularx}
+\usetikzlibrary{calc}
+\usepackage[italian]{babel}
+
+\author{Luca Parolari}
+\date{DATE}
+\title{Registro}
+
+
+\begin{document}
+
+\maketitle
+
+Registro lavori dal FROMDT al TODT.
+
+\begin{table}[!htb]
+	\caption{Totali}
+    \begin{minipage}{.5\linewidth}
+      \caption{Ore}
+      \centering
+        \begin{tabular}{lll}
+        	\textbf{Totale} & \textbf{Produzione} & \textbf{Non produzione} \\
+            HOURS & HOURSPROD & HOURSNONPROD
+        \end{tabular}
+    \end{minipage}%
+    \begin{minipage}{.5\linewidth}
+      \centering
+        \caption{Costo}
+        \begin{tabular}{lll}
+            \textbf{Lordo} & \textbf{Ritenuta} & \textbf{Netto} \\
+            GROSS & TAX & NET
+        \end{tabular}
+    \end{minipage} 
+\end{table}
+
+\begin{table}[!htb]
+\caption{Dettaglio}
+\centering
+\begin{tabularx}{570pt}{llllllX}
+ \textbf{Data} & \textbf{Da} & \textbf{A} & \textbf{Ore} & \textbf{Km} & \textbf{Prod.} & \textbf{Registro} \\
+ & & & & & & \\
+ TABLEROWS
+\end{tabularx}
+\end{table}
+
+\end{document}

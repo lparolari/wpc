@@ -2,7 +2,6 @@ import glob
 import os
 import re
 import subprocess
-from pathlib import Path
 from abc import abstractmethod
 
 from wpc.config.configurator import Configurator
@@ -51,6 +50,22 @@ class Doc(object):
         """
         raise NotImplementedError("This method should be implemented")
 
+    @property
+    @abstractmethod
+    def file_path(self):
+        """
+        :return: The file path.
+        """
+        raise NotImplementedError("This method should be implemented")
+
+    @property
+    @abstractmethod
+    def file_name(self):
+        """
+        :return: The file name.
+        """
+        raise NotImplementedError("This method should be implemented")
+
     def _generate_doc(self, out_dir, out_file):
         # TODO: implement in latex impl.
         try:
@@ -90,12 +105,11 @@ class Doc(object):
             if val is None:
                 raise ValueError('Cannot generate document: %s is None' % key)
 
-        home_path = str(Path.home())
-        out_dir = os.path.join(home_path, 'wpc-invoices')
+        out_dir = self.file_path
         if not os.path.exists(out_dir):
             os.makedirs(out_dir)
 
-        out_fn = os.path.join(out_dir, 'invoice_' + self.date_file)
+        out_fn = os.path.join(out_dir, self.file_name)
         out_src_file = out_fn + '.' + self.ext_src()
         out_compiled_file = out_fn + '.' + self.ext_out()
 
