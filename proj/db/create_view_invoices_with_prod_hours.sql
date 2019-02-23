@@ -13,4 +13,4 @@ select
 from works w
 inner join invoices i on (w.begin >= i.from_dt and w.begin <= i.to_dt)
 where w.prod = 1
-group by i.id, i.emitted_at, i.gross, i.tax, i.net, i.from_dt, i.to_dt, i.note, i.customer_id, i.reason, i.prog
+group by i.id, i.emitted_at, i.gross, i.tax, i.net, i.from_dt, i.to_dt, i.note, i.customer_id, i.reason, i.prog;

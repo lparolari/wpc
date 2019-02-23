@@ -34,4 +34,4 @@ union
 select i.id, i.emitted_at, i.gross, i.tax, i.net, i.from_dt, i.to_dt, i.note, i.customer_id, 0, 0, i.reason, i.prog
 from invoices i
 where i.id not in (select id from invoices_with_prod_hours)
-  and i.id not in (select id from invoices_with_non_prod_hours)
+  and i.id not in (select id from invoices_with_non_prod_hours);
