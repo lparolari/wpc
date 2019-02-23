@@ -47,38 +47,24 @@ def show(id_, date):
     """
 
     # TODO: implements filters.
-    invoices = []
 
-    # Find results.
-    # if id_ is not None:
-    #     res = cli_repo.find(id_)
-    #     if res is not None:
-    #         clients = [res]
-    # elif name is not None:
-    #     clients = cli_repo.query()\
-    #                 .filter(Customer.name.like("%"+name+"%"))\
-    #                 .all()
-    # else:
-    #     clients = cli_repo.query().all()
-    #
-    # Print results.
-
-    invoices = invoice_repo.getAllWithHours()
+    invoices = invoice_repo.getAll()
 
     if len(invoices) <= 0:
         click.echo("No invoices found.")
         return
 
-    headers = ['Date', 'From', 'To', 'Gross', 'Tot. Hours', 'P. Hours', 'Non P. Hours']
+    headers = ['Id', 'Date', 'Prog.', 'Gross', 'Tax', 'Net', 'Reason', 'Note']
     rows = [
         [
-            x.emitted_at.strftime("%d/%m/%Y %H:%M"),
-            x.from_dt.strftime("%d/%m/%Y"),
-            x.to_dt.strftime("%d/%m/%Y"),
+            str(x.id),
+            x.emitted_at_str,
+            x.prog,
             x.gross,
-            x.hours_prod + x.hours_non_prod,
-            x.hours_prod,
-            x.hours_non_prod
+            x.tax,
+            x.net,
+            x.reason,
+            x.note
         ]
         for x in invoices]
 
@@ -90,57 +76,34 @@ def show(id_, date):
 @click.command()
 @click.option('-e/--explicit', 'explicit', is_flag=True,
               help='Define all data for the invoice and show calculated as defaults.')
-def add(explicit):
+@click.option('--report', type=int, help='Generate an invoice based on report data.')
+def add(explicit, report):
     """
     Insert an invoice.
     """
 
-    # calculate begin and end of a month ago.
-    a_month_ago = date.today()
-    a_month_ago = date(a_month_ago.year, a_month_ago.month, 1)
-    a_month_ago = a_month_ago + relativedelta(months=-1)
-
-    begin_default = datetime(a_month_ago.year, a_month_ago.month, 1)
-    end_default = datetime(a_month_ago.year, a_month_ago.month, monthrange(a_month_ago.year, a_month_ago.month)[1])
-
-    # read values.
     parserinfo = parser.parserinfo(dayfirst=True)
-    begin = parser.parse(click.prompt("From", default=begin_default.strftime("%d/%m/%Y")), parserinfo)  # value_proc=parse)#type=click.DateTime(formats=formats), default=begin_default.strftime('%d/%m/%Y'))
-    end = parser.parse(click.prompt("To", default=end_default.strftime('%d/%m/%Y')), parserinfo)
 
-    begin = begin.date()
-    end = end.date()
+    # defaults
+    gross = 0
+    tax = 0
+    net = 0
+    if report is not None:
+        pass
+        # TODO: get defaults from report.
 
-    if begin > end:
-        raise ValueError("From date cannot be greater than end date")
-
-    reason = click.prompt("Reason", default="assistenza presso Vostri clienti")
-    prog = click.prompt("Progressive (0 for report only)", default=invoice_repo.getNextProg())
-    prog = prog if prog != 0 else None
-    note = click.prompt("Note", default="")
-
-    note = (note if note != "" else None)
-
-    net = work_repo.getTotalNetBetween(begin, end)
-    tax = work_repo.getTotalTaxBetween(begin, end)
-    gross = work_repo.getTotalGrossBetween(begin, end)
-    hours_tot = work_repo.getHoursBetween(begin, end)
-    hours_p = work_repo.getHoursProdBetween(begin, end)
-    hours_np = work_repo.getHoursNonProdBetween(begin, end)
-    km = work_repo.getKmBetween(begin, end)
+    # read values
     date_ = datetime.today()
-
     if explicit:
-        date_ = parser.parse(click.prompt("Date", default=date_.strftime('%d/%m/%Y %H:%M')), parserinfo)
-        net = click.prompt("Net", net, type=float)
-        tax = click.prompt("Tax", tax, type=float)
-        gross = click.prompt("Gross", gross, type=float)
-        hours_tot = click.prompt("Total hours", hours_tot, type=float)
-        hours_p = click.prompt("Production hours", hours_p, type=float)
-        hours_np = click.prompt("Non production hours", hours_np, type=float)
-        km = click.prompt("Kilometers", km, type=int)
+        date_ = parser.parse(click.prompt("Date", default=date_.strftime('%d/%m/%Y')), parserinfo)
+    date_ = date_.date()
 
-    # display results.
+    prog = click.prompt("Progressive", default=invoice_repo.getNextProg(date_))
+    net = click.prompt("Net", net, type=float)
+    tax = click.prompt("Tax", tax, type=float)
+    gross = click.prompt("Gross", gross, type=float)
+    reason = click.prompt("Reason", default="assistenza presso Vostri clienti")
+    note = click.prompt("Note", default="")
 
     click.echo()
     click.echo("Summary:")
@@ -148,36 +111,28 @@ def add(explicit):
 
     click.echo(tabulate(
         [[
-            begin.strftime("%d/%m/%Y"),
-            end.strftime("%d/%m/%Y"),
-            str(hours_tot.total_seconds() / 60 / 60),
-            str(hours_p.total_seconds() / 60 / 60),
-            str(hours_np.total_seconds() / 60 / 60),
-            str(km),
+            date_.strftime("%d/%m/%Y"),
+            str(prog),
             str(gross),
             str(tax),
-            str(net)
+            str(net),
+            reason,
+            note
         ]],
-        ['Form', 'To', 'Tot. Hours', 'P. Hours', 'Non P. Hours', 'Km', 'Gross', 'Tax', 'Net']))
+        ['Date', 'Prog', 'Gross', 'Tax', 'Net', 'Reason', 'Note']))
 
     click.echo()
-
-    generate_invoice_file = False
-    if prog is not None and not click.confirm("Generate invoice file?"):
-        generate_invoice_file = True
 
     if not click.confirm("Emit invoice?"):
         click.echo("Invoice not emitted.")
         return
 
-    inv = Invoice.create(begin, end, gross, configurator.customer, prog, reason, tax, net, note)
-    inv.emitted_at = date_
+    inv = Invoice.create(date_, prog, gross, tax, net, reason, note, configurator.customer)
     invoice_repo.create(inv)
 
     click.echo("Invoice registered.")
 
-    # if prog is None only report is generated!
-    if generate_invoice_file and prog is not None:
+    if click.confirm("Generate invoice file?"):
         doc.set_invoice_from(inv)
         doc.date = date_
 

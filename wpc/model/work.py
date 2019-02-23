@@ -73,4 +73,7 @@ class Work(Base):
         :return: The difference between end and begin, i.e., number of
             worker hours.
         """
+        if self.from_dt is None or self.to_dt is None:
+            return self.minutes
+
         return self.to_dt - self.from_dt
