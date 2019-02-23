@@ -7,8 +7,8 @@ class Work(Base):
     __tablename__ = 'works'
     id = Column(Integer, primary_key=True, autoincrement=True)
     date = Column(DateTime, nullable=False)
-    begin = Column(DateTime, nullable=False)
-    end = Column(DateTime, nullable=False)
+    from_dt = Column(DateTime, nullable=False)
+    to_dt = Column(DateTime, nullable=False)
     minutes = Column(Integer)
     add = Column(Float)
     note = Column(String)
@@ -26,26 +26,46 @@ class Work(Base):
     def __repr__(self) -> str:
         return '<{0}.{1} #{2} :: registry:{3}>'.format(self.__module__, type(self).__name__, self.id, self.registry)
 
+    @staticmethod
+    def create(date, from_dt, to_dt, registry, prod, km, client_id, customer_id, minutes=None, add=None,
+               note=None, price=12.0):
+        x = Work()
+
+        x.date = date
+        x.from_dt = from_dt
+        x.to_dt = to_dt
+        x.registry = registry
+        x.prod = prod
+        x.km = km
+        x.client_id = client_id
+        x.customer_id = customer_id
+        x.minutes = minutes
+        x.add = add
+        x.note = note
+        x.price = price
+
+        return x
+
     @property
-    def datestr(self):
+    def date_str(self):
         """
         :return: A string representation for *date* date.
         """
         return self.date.strftime("%d/%m/%Y %H:%M")
 
     @property
-    def beginstr(self):
+    def from_dt_str(self):
         """
         :return: A string representation for *begin* date.
         """
-        return self.begin.strftime("%d/%m/%Y %H:%M")
+        return self.from_dt.strftime("%d/%m/%Y %H:%M")
 
     @property
-    def endstr(self):
+    def to_dt_str(self):
         """
         :return: A string representation for *end* date.
         """
-        return self.end.strftime("%d/%m/%Y %H:%M")
+        return self.to_dt.strftime("%d/%m/%Y %H:%M")
 
     @property
     def hours(self):
@@ -53,4 +73,4 @@ class Work(Base):
         :return: The difference between end and begin, i.e., number of
             worker hours.
         """
-        return self.end - self.begin
+        return self.to_dt - self.from_dt

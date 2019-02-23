@@ -23,15 +23,15 @@ class WorkRepo(CrudRepo):
         # TODO: implement clazz logic.
         return super(CrudRepo, self)._q() \
             .filter(Work.customer_id == super()._configurator.customer) \
-            .order_by(Work.begin.asc(), Work.end.asc())
+            .order_by(Work.from_dt.asc(), Work.to_dt.asc())
 
     def getAll(self, *criterion):
         return self._q().all()
 
     def getBetween(self, begin, end):
         return self._q() \
-            .filter(Work.begin >= begin) \
-            .filter(Work.end <= end) \
+            .filter(Work.from_dt >= begin) \
+            .filter(Work.to_dt <= end) \
             .all()
 
     def getBetweenStart(self, begin, end):
@@ -41,8 +41,8 @@ class WorkRepo(CrudRepo):
         :return: A list of works between ``begin`` and ``end``, ``end`` excluded.
         """
         return self._q() \
-            .filter(Work.begin >= begin) \
-            .filter(Work.begin < end) \
+            .filter(Work.from_dt >= begin) \
+            .filter(Work.from_dt < end) \
             .all()
 
     def getProfitGrossBetween(self, begin, end):
