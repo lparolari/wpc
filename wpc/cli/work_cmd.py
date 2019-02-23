@@ -91,7 +91,7 @@ def show(day, month, year, all_):
         return
 
     headers = ['Client', 'Date', 'Begin', 'End', 'Hours', 'Registry']
-    rows = [[w.client.name if w.client_id is not None else '', w.datestr, w.beginstr, w.endstr, w.hours, w.registry] for w in works]
+    rows = [[w.client.name if w.client_id is not None else '', w.date_str, w.from_dt_str, w.to_dt_str, w.hours, w.registry] for w in works]
 
     click.echo(tabulate(rows, headers))
 
@@ -99,12 +99,51 @@ def show(day, month, year, all_):
 
 
 @click.command()
-def add():
+@click.option('-e/--explicit', 'explicit', is_flag=True,
+              help='Define all data for the invoice and show calculated as defaults.')
+def add(explicit):
     """
     Insert work.
     """
 
-    raise NotImplementedError
+    # defaults
+    date_dt = datetime.datetime.today()
+    from_dt = datetime.datetime.today()
+    to_dt = datetime.datetime.today()
+    customer_id = configurator.customer
+    minutes = None
+    note = None
+    add = None
+    price = 12.0
+
+    parserinfo = parser.parserinfo(dayfirst=True)
+
+    date_dt = parser.parse(click.prompt("Date", default=date_dt.strftime('%d/%m/%Y %H:%M')), parserinfo)
+    from_dt = parser.parse(click.prompt("From", default=from_dt.strftime('%d/%m/%Y %H:%M')), parserinfo)
+    to_dt = parser.parse(click.prompt("To", default=to_dt.strftime('%d/%m/%Y %H:%M')), parserinfo)
+    if explicit:
+        minutes = click.prompt("Minutes", default=-1, type=int)
+        minutes = minutes if minutes != -1 else None
+        if minutes is not None:
+            from_dt = None
+            to_dt = None
+    registry = click.prompt("Registry")
+    prod = click.prompt("Prod", default=True, type=bool)
+    km = click.prompt("Km", default=0, type=int)
+    client_id = click.prompt("Client Id", default=-1, type=int)
+    client_id = client_id if client_id != -1 else None
+    if explicit:
+        add = click.prompt("Add", default=-1, type=int)
+        add = add if add != -1 else None
+        note = click.prompt("Note", default="")
+        note = note if note != "" else None
+        price = click.prompt("Price", default=configurator.price, type=float)
+
+    w = Work.create(date_dt, from_dt, to_dt, registry, prod, km, client_id, customer_id, minutes, add, note, price)
+
+    work_repo.create(w)
+
+    return
 
 
 @click.command()
@@ -114,7 +153,19 @@ def remove(id_):
     Remove work.
     :param id_: A work id.
     """
-    raise NotImplementedError
+
+    w = work_repo.find(id_)
+    if w is not None:
+        click.echo("Deleting work #{} (registry: {})".format(id_, w.registry))
+        if click.confirm("Are you sure?"):
+            work_repo.remove(w)
+            click.echo("Deleted successful.")
+        else:
+            click.echo("Not deleted.")
+    else:
+        click.echo("No work found.")
+
+    return
 
 
 @click.command()
@@ -160,10 +211,10 @@ def data(operation, file_type, file, ignore_empty_fields):
                                     minutes = datetime.datetime.strptime(row[3], "%H.%M.%S")
                                 except ValueError:
                                     minutes = datetime.datetime.strptime(row[3], "%H:%M")
-                                w.begin = datetime.datetime.strptime(row[1], "%H:%M") if row[1] is not '' else w.date.replace(hour=0, minute=0, second=0)
-                                w.begin = w.begin.replace(year=w.date.year, month=w.date.month, day=w.date.day)
-                                w.end = datetime.datetime.strptime(row[2], "%H:%M") if row[2] is not '' else w.date.replace(hour=minutes.hour, minute=minutes.minute, second=0)
-                                w.end = w.end.replace(year=w.date.year, month=w.date.month, day=w.date.day)
+                                w.from_dt = datetime.datetime.strptime(row[1], "%H:%M") if row[1] is not '' else w.date.replace(hour=0, minute=0, second=0)
+                                w.from_dt = w.from_dt.replace(year=w.date.year, month=w.date.month, day=w.date.day)
+                                w.to_dt = datetime.datetime.strptime(row[2], "%H:%M") if row[2] is not '' else w.date.replace(hour=minutes.hour, minute=minutes.minute, second=0)
+                                w.to_dt = w.to_dt.replace(year=w.date.year, month=w.date.month, day=w.date.day)
                                 w.km = row[4] if row[4] is not '' else 0
                                 w.prod = False if row[5] == 'FALSE' else True
                                 w.add = row[6] if row[6] is not '' else None
