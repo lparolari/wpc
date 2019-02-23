@@ -89,9 +89,9 @@ def remove(id_):
 
     if click.confirm("Are you sure?"):
         cli_repo.remove(c)
-        click.echo("Success.")
+        click.echo("Deleted successful.")
     else:
-        click.echo("OK.")
+        click.echo("Not deleted.")
 
     return
 

@@ -122,63 +122,42 @@ def add():
     click.echo("Payment registered.")
 
     return
-#
-#
-# @click.command()
-# @click.argument('id_', type=int, required=True)
-# def remove(id_):
-#     """
-#     Remove an invoice.
-#
-#     :param id_: The id of the invoice.
-#     """
-#
-#     raise NotImplementedError
-#
-#     # c = cli_repo.find(id_)
-#     # if c is None:
-#     #     click.echo("Client with id %s not found." % id_)
-#     #     return
-#     #
-#     # if click.confirm("Are you sure?"):
-#     #     cli_repo.remove(c)
-#     #     click.echo("Success.")
-#     # else:
-#     #     click.echo("OK.")
-#
-#     return
-#
-#
-# @click.command()
-# @click.argument('id_', type=int, required=True)
-# def edit(id_):
-#     """
-#     Edit an invoice.
-#     :param id_: The id of the invoice.
-#     """
-#
-#     raise NotImplementedError
-#
-#     # c = cli_repo.find(id_)
-#     # if c is None:
-#     #     click.echo("Client with id %s not found." % id_)
-#     #     return
-#     #
-#     # name = click.prompt("Name?", default=c.name, type=str)
-#     #
-#     # c.name = name
-#     # cli_repo.update(c)
-#     #
-#     # click.echo("Success.")
-#
-#     return
-#
-#
-# invoice.add_command(show)
-# invoice.add_command(add)
-# invoice.add_command(remove)
-# invoice.add_command(edit)
+
+
+@click.command()
+@click.argument('id_', type=int, required=True)
+def remove(id_):
+    """
+    Remove an invoice.
+
+    :param id_: The id of the payment.
+    """
+
+    x = payment_repo.find(id_)
+    if x is not None:
+        click.echo("Deleting payment #{} (gross %d, at %s)".format(x.gross, x.paid_at_str))
+        if click.confirm("Are you sure?"):
+            payment_repo.remove(x)
+            click.echo("Deleted successful.")
+        else:
+            click.echo("Not deleted.")
+    else:
+        click.echo("No payment found.")
+    return
+
+
+@click.command()
+@click.argument('id_', type=int, required=True)
+def edit(id_):
+    """
+    Edit a payment.
+    :param id_: The id of the payment.
+    """
+
+    raise NotImplementedError
 
 
 payment.add_command(show)
 payment.add_command(add)
+payment.add_command(remove)
+payment.add_command(edit)

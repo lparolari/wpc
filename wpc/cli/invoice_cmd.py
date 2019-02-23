@@ -201,18 +201,16 @@ def remove(id_):
     :param id_: The id of the invoice.
     """
 
-    raise NotImplementedError
-
-    # c = cli_repo.find(id_)
-    # if c is None:
-    #     click.echo("Client with id %s not found." % id_)
-    #     return
-    #
-    # if click.confirm("Are you sure?"):
-    #     cli_repo.remove(c)
-    #     click.echo("Success.")
-    # else:
-    #     click.echo("OK.")
+    x = invoice_repo.find(id_)
+    if x is not None:
+        click.echo("Deleting invoice #{} (from %s to %s)".format(x.from_dt_str, x.to_dt_str))
+        if click.confirm("Are you sure?"):
+            invoice_repo.remove(x)
+            click.echo("Deleted successful.")
+        else:
+            click.echo("Not deleted.")
+    else:
+        click.echo("No invoice found.")
 
     return
 
@@ -226,20 +224,6 @@ def edit(id_):
     """
 
     raise NotImplementedError
-
-    # c = cli_repo.find(id_)
-    # if c is None:
-    #     click.echo("Client with id %s not found." % id_)
-    #     return
-    #
-    # name = click.prompt("Name?", default=c.name, type=str)
-    #
-    # c.name = name
-    # cli_repo.update(c)
-    #
-    # click.echo("Success.")
-
-    return
 
 
 invoice.add_command(show)
