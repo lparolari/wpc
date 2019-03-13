@@ -1,1 +1,1 @@
-type db_create_*.sql create_view_invoices_with_prod_hours.sql create_view_invoices_with_non_prod_hours.sql create_view_invoices_with_hours.sql > mig.sql
+type db_create_*.sql > mig.sql

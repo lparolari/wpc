@@ -1,1 +1,1 @@
-cat db_create_*.sql cat create_view_invoices_with_prod_hours.sql cat create_view_invoices_with_non_prod_hours.sql create_view_invoices_with_hours.sql > mig.sql
+cat db_create_*.sql > mig.sql
