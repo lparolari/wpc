@@ -6,5 +6,5 @@ __author__ = """Luca Parolari"""
 __email__ = 'luca.parolari23@gmail.com'
 __version__ = '0.1.0'
 
-from wpc import repository, model, db, config, model, doc, cli
-__all__ = ["repository", "model", "db", "doc", "cli", "config"]
+from wpc import repository, model, db, config, model, doc, cli, boot
+__all__ = ["repository", "model", "db", "doc", "cli", "config", "boot"]
