@@ -12,7 +12,7 @@ from wpc.model.work import Work
 from wpc.model.customer import Customer
 from wpc.repository.workrepo import WorkRepo
 from wpc.repository.customerrepo import CustomerRepo
-from wpc.config.configurator import Configurator
+from wpc.config.config import Configurator
 
 work_repo = WorkRepo(Work)
 customer_repo = CustomerRepo(Customer)

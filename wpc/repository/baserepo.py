@@ -1,5 +1,5 @@
 # import wpc.db
-from wpc.config.configurator import Configurator
+from wpc.config.config import Configurator
 from wpc.db import Db
 
 

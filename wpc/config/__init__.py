@@ -1,4 +1,4 @@
-from .configurator import Configurator
+from .config import Configurator
 
 __all__ = ["Configurator"]
 pass

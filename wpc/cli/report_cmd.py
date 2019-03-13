@@ -6,7 +6,7 @@ from dateutil import parser
 from dateutil.relativedelta import relativedelta
 from tabulate import tabulate
 
-from wpc.config.configurator import Configurator
+from wpc.config.config import Configurator
 from wpc.doc.registry import RegistryTexDoc
 from wpc.model.report import Report
 from wpc.repository import WorkRepo, ReportRepo

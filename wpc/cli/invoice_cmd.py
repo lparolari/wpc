@@ -12,7 +12,7 @@ from dateutil.relativedelta import relativedelta
 from tabulate import tabulate
 
 
-from wpc.config.configurator import Configurator
+from wpc.config.config import Configurator
 from wpc.doc.invoice import InvoiceTexDoc
 from wpc.repository import WorkRepo, InvoiceRepo
 from wpc.model.invoice import Invoice

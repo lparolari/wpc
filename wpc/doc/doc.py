@@ -4,7 +4,7 @@ import re
 import subprocess
 from abc import abstractmethod
 
-from wpc.config.configurator import Configurator
+from wpc.config.config import Configurator
 
 
 class Doc(object):

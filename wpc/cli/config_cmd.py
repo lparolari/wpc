@@ -1,6 +1,6 @@
 import click
 
-from wpc.config.configurator import Configurator
+from wpc.config.config import Configurator
 from wpc.model.customer import Customer
 from wpc.repository.customerrepo import CustomerRepo
 

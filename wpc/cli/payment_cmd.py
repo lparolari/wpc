@@ -3,7 +3,7 @@ from datetime import datetime
 from dateutil import parser
 from tabulate import tabulate
 
-from wpc.config.configurator import Configurator
+from wpc.config.config import Configurator
 from wpc.repository import PaymentRepo, InvoiceRepo
 from wpc.model import Payment, Invoice
 

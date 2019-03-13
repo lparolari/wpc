@@ -1,7 +1,8 @@
-from wpc.model import Base
-
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+
+from wpc.model import Base
+from wpc.config.config import configurator
 
 
 class Db:
@@ -10,7 +11,7 @@ class Db:
     def __init__(self):
         self._autocommit = False
 
-        engine = create_engine('sqlite:///wpc.db')
+        engine = create_engine(configurator.db_connection_string)
         # Bind the engine to the metadata of the Base class so that the
         # declaratives can be accessed through a DBSession instance
         Base.metadata.bind = engine
