@@ -1,11 +1,12 @@
-from .repo import Repo
-from .baserepo import BaseRepo
-from .crudrepo import CrudRepo
-from .customerrepo import CustomerRepo
-from .invoice_repo import InvoiceRepo
-from .workrepo import WorkRepo
-from .payment_repo import PaymentRepo
-from .report_repo import ReportRepo
+"""
+Module containing all the repositories for data interaction.
+"""
 
-__all__ = ["BaseRepo", "CrudRepo", "CustomerRepo", "InvoiceRepo", "Repo", "WorkRepo", "PaymentRepo", "ReportRepo"]
-pass
+from wpc.repository.crudrepo import CrudRepo
+from wpc.repository.customer_repo import CustomerRepo
+from wpc.repository.invoice_repo import InvoiceRepo
+from wpc.repository.payment_repo import PaymentRepo
+from wpc.repository.workrepo import WorkRepo
+from wpc.repository.report_repo import ReportRepo
+
+__all__ = [CrudRepo, CustomerRepo, InvoiceRepo, WorkRepo, PaymentRepo, ReportRepo]

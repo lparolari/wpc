@@ -51,7 +51,7 @@ class InvoiceTexDoc(DocTex):
         PROGRESSIVE: 0,
         DATE: None,
 
-        # TODO: take this defaults from configs.
+        # TODO: take this defaults from configs or even from database.
         INVOICE_DOC_NAME: 'Notula',
         OPENING_GRADE: 'Spett.le',
 

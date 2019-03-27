@@ -1,4 +1,3 @@
-# import wpc
 import datetime
 import time
 from datetime import date
@@ -11,7 +10,7 @@ from tabulate import tabulate
 from wpc.model.work import Work
 from wpc.model.customer import Customer
 from wpc.repository.workrepo import WorkRepo
-from wpc.repository.customerrepo import CustomerRepo
+from wpc.repository.customer_repo import CustomerRepo
 from wpc.config.config import Configurator
 
 work_repo = WorkRepo(Work)

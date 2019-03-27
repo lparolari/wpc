@@ -1,5 +1,6 @@
-from .db import Db
-from .query import Query
+"""
+Module containing db tools
+"""
 
-__all__ = ["Db", "Query"]
-pass
+from wpc.db.db import Database
+from wpc.db.query import Query

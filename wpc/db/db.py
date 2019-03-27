@@ -5,7 +5,7 @@ from wpc.model import Base
 from wpc.config.config import configurator
 
 
-class Db:
+class Database:
     _session = None
 
     def __init__(self):
@@ -25,23 +25,6 @@ class Db:
         # revert all of them back to the last commit by calling
         # session.rollback()
         self._session = db_session()
-
-    #def create(self, obj):
-    #    self._session.add(obj)
-    #    self._session.commit()
-
-    # def update(self, obj):
-    #    self._session.query(obj)
-    #    self._session.commit()
-
-    #def query(self, clazz):
-    #    return self._session.query(clazz)
-
-    #def find(self, clazz, id):
-    #    return self._session.query(clazz).filter(clazz.id == id).first()
-
-    #def getAll(self, clazz):
-    #    return self._session.query(clazz).all()
 
     @property
     def autocommit(self):

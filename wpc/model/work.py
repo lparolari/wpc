@@ -1,6 +1,6 @@
 from sqlalchemy import Column, ForeignKey, Integer, Float, String, DateTime, Boolean
 from sqlalchemy.orm import relationship
-from .base import Base
+from wpc.model.base import Base
 
 
 class Work(Base):

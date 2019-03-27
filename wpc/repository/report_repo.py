@@ -1,7 +1,7 @@
 from sqlalchemy import func, extract
 
 from wpc.model import Report
-from .crudrepo import CrudRepo
+from wpc.repository.crudrepo import CrudRepo
 
 
 class ReportRepo(CrudRepo):

@@ -2,7 +2,7 @@ import click
 
 from wpc.config.config import Configurator
 from wpc.model.customer import Customer
-from wpc.repository.customerrepo import CustomerRepo
+from wpc.repository.customer_repo import CustomerRepo
 
 
 configurator = Configurator()

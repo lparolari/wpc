@@ -1,4 +1,1 @@
-from .config import Configurator
-
-__all__ = ["Configurator"]
-pass
+from wpc.config.config import Configurator

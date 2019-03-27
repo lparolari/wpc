@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from wpc.cli import cli
-from boot import boot
+from wpc.boot import boot
+from wpc.cli import shell
 
 if __name__ == "__main__":
     boot.bootstrap()
-    cli.cli_commands()
+    shell.cli_commands()
 
     # sys.exit(main())  # pragma: no cover
 

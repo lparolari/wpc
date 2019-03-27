@@ -1,12 +1,11 @@
-# import wpc
-
 import click
 
-# from .client import client
-# from .work import work
-# from .invoice import invoice
-# from .config import config
-from wpc.cli import customer, work, invoice, config, payment, report
+from wpc.cli.config_cmd import config
+from wpc.cli.customer_cmd import customer
+from wpc.cli.work_cmd import work
+from wpc.cli.report_cmd import report
+from wpc.cli.invoice_cmd import invoice
+from wpc.cli.payment_cmd import payment
 
 
 @click.group()
@@ -17,7 +16,7 @@ def cli_commands():
 
     Luca Parolari <luca.parolari23@gmail.com>
 
-    Work Pay Calculator @ 2018
+    Work Pay Calculator @ 2018-2019
     """
     pass
 

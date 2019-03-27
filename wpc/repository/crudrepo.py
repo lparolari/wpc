@@ -14,7 +14,8 @@ class CrudRepo(BaseRepo):
 
     def update(self, x):
         # self._s().commit()
-        raise NotImplementedError
+        # TODO: implement or remove this method.
+        pass
 
     def find(self, id_):
         return self._q().filter(self._clazz.id == id_).first()

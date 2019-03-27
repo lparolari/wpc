@@ -3,9 +3,9 @@ from datetime import datetime, date, timedelta
 from calendar import monthrange
 from pprint import pprint
 
-from .crudrepo import CrudRepo
-from wpc.model import Work
-from wpc.config import Configurator
+from wpc.repository.crudrepo import CrudRepo
+from wpc.model.work import Work
+from wpc.config.config import Configurator
 
 
 # noinspection PyPep8Naming

@@ -1,11 +1,12 @@
-from .base import Base
-from .customer import Customer
-from .invoice import Invoice
-from .invoice_with_hours import InvoiceWithHours
-from .payment import Payment
-from .work import Work
-from .client import Client
-from .report import Report
+"""
+Module containin all WPC models
+"""
 
-__all__ = ["Customer", "Invoice", "InvoiceWithHours", "Payment", "Work", "Base", "Client", "Report"]
-pass
+from wpc.model.base import Base
+from wpc.model.customer import Customer
+from wpc.model.invoice import Invoice
+from wpc.model.invoice_with_hours import InvoiceWithHours
+from wpc.model.payment import Payment
+from wpc.model.work import Work
+from wpc.model.client import Client
+from wpc.model.report import Report

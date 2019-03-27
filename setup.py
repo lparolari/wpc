@@ -25,8 +25,6 @@ setup(
         'Intended Audience :: Developers',
         'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
         'Natural Language :: English',
-        "Programming Language :: Python :: 2",
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
@@ -37,7 +35,7 @@ setup(
                 "objective of manage your work (hours and costs) and emit invoices.",
     entry_points={
         'console_scripts': [
-            'wpc=wpc.shell_cli:cli.cli_commands',
+            'wpc=wpc.shell_cli:shell.cli_commands',
         ],
     },
     install_requires=requirements,

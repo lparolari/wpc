@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String
-from .base import Base
+from wpc.model.base import Base
 
 
 class Customer(Base):
