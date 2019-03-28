@@ -52,8 +52,8 @@ class InvoiceTexDoc(DocTex):
         DATE: None,
 
         # TODO: take this defaults from configs or even from database.
-        INVOICE_DOC_NAME: 'Notula',
-        OPENING_GRADE: 'Spett.le',
+        INVOICE_DOC_NAME: 'Ricevuta',
+        OPENING_GRADE: '',
 
         # TODO: take this defaults from database!
         RECIPIENT_FISCAL_NAME: 'Nexio Informatica S.r.l Unipersonale',
@@ -65,7 +65,7 @@ class InvoiceTexDoc(DocTex):
         RECIPIENT_COUNTRY: 'Italia',
         RECIPIENT_VAT: 'IT 04030320982',
         RECIPIENT_FISCAL_CODE: 'IT 04030320982',
-        RECIPIENT_NAME: 'Antonio Toselli',
+        RECIPIENT_NAME: '',
     }
 
     def template(self):
