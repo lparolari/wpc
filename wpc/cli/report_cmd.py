@@ -160,7 +160,7 @@ def remove(id_):
 
     x = report_repo.find(id_)
     if x is not None:
-        click.echo("Deleting report #{}".format(x.emitted_at_str))
+        click.echo("Deleting report #{} of {}".format(x.id, x.emitted_at_str))
         if click.confirm("Are you sure?"):
             report_repo.remove(x)
             click.echo("Deleted successful.")
