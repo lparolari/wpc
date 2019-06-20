@@ -20,6 +20,8 @@ class Configurator(object):
     OPT_DATEFORMAT = 'dateformat'
     OPT_DEBUG = 'debug'
     OPT_DATA_PATH = 'data_path'
+    OPT_INVOICES_PATH = 'invoices_path'
+    OPT_REPORTS_PATH = 'reports_path'
     OPT_CONFIG_FILE_PATH = 'config_file_path'
     OPT_DB_CONNECTION_STRING = 'db_connection_string'
 
@@ -113,6 +115,10 @@ class Configurator(object):
             self.price = str(12.0)
         if force or not self._cfg.has_option(self.SEC_APP, self.OPT_DB_CONNECTION_STRING):
             self.db_connection_string = 'sqlite:///' + str(os.path.join(self.data_path, 'wpc.db'))
+        if force or not self._cfg.has_option(self.SEC_APP, self.OPT_REPORTS_PATH):
+            self.reports_path = str(os.path.join(str(Path.home()), 'wpc', 'reports'))
+        if force or not self._cfg.has_option(self.SEC_APP, self.OPT_INVOICES_PATH):
+            self.invoices_path = str(os.path.join(str(Path.home()), 'wpc', 'invoices'))
         # OPT_CUSTOMER_ID is intentionally not initialized by default.
 
     # user properties
@@ -186,6 +192,23 @@ class Configurator(object):
     @db_connection_string.setter
     def db_connection_string(self, value):
         self.set(self.SEC_APP, self.OPT_DB_CONNECTION_STRING, str(value))
+
+    @property
+    def reports_path(self):
+        return self.get(self.SEC_APP, self.OPT_REPORTS_PATH)
+
+    @reports_path.setter
+    def reports_path(self, value):
+        self.set(self.SEC_APP, self.OPT_REPORTS_PATH, str(value))
+
+    @property
+    def invoices_path(self):
+        return self.get(self.SEC_APP, self.OPT_INVOICES_PATH)
+
+    @invoices_path.setter
+    def invoices_path(self, value):
+        self.set(self.SEC_APP, self.OPT_INVOICES_PATH, str(value))
+
 
     # doc properties
 
