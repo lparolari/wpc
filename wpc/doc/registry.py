@@ -37,9 +37,7 @@ class RegistryTexDoc(DocTex):
 
     @property
     def file_path(self):
-        home_path = str(Path.home())
-        out_dir = os.path.join(home_path, 'wpc-reports')
-        return out_dir
+        return super()._configurator.reports_path
 
     @property
     def file_name(self):
@@ -105,7 +103,16 @@ class RegistryTexDoc(DocTex):
             tablerows += str(round(x.hours.total_seconds() / 60.0 / 60.0, 2)) + ' & '
             tablerows += str(x.km) + ' & '
             tablerows += ('SI' if x.prod is True else 'NO') + ' & '
-            tablerows += x.registry + (re.escape('\\\\')+' \n ' if i < len(value) else '')
+
+            registry_escaped = x.registry.translate(str.maketrans({
+                "{": r"\{", "}": r"\}",
+                "\\": r" ",
+                "^": r"\^",
+                "$": r"\$",
+                "&": r"\&",
+                "%": r"\%"}))
+
+            tablerows += registry_escaped + (re.escape('\\\\')+' \n ' if i < len(value) else '')
 
         self._data[self.TABLEROWS] = tablerows
 

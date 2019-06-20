@@ -73,9 +73,7 @@ class InvoiceTexDoc(DocTex):
 
     @property
     def file_path(self):
-        home_path = str(Path.home())
-        out_dir = os.path.join(home_path, 'wpc-invoices')
-        return out_dir
+        return super()._configurator.invoices_path
 
     @property
     def file_name(self):
