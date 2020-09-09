@@ -6,6 +6,7 @@
 \usepackage{tabularx}
 \usetikzlibrary{calc}
 \usepackage[italian]{babel}
+\usepackage{longtable}
 
 \author{Luca Parolari}
 \date{DATE}
@@ -38,14 +39,12 @@ Registro lavori dal FROMDT al TODT.
     \end{minipage} 
 \end{table}
 
-\begin{table}[!htb]
-\caption{Dettaglio}
-\centering
-\begin{tabularx}{570pt}{llllllX}
+\begin{center}
+\begin{longtable}{lllllll}
+ \caption{Dettaglio}\\
  \textbf{Data} & \textbf{Da} & \textbf{A} & \textbf{Ore} & \textbf{Km} & \textbf{Prod.} & \textbf{Registro} \\
- & & & & & & \\
  TABLEROWS
-\end{tabularx}
-\end{table}
+\end{longtable}
+\end{center}
 
 \end{document}

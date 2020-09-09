@@ -20,7 +20,7 @@ from wpc.model.invoice import Invoice
 work_repo = WorkRepo()
 invoice_repo = InvoiceRepo()
 configurator = Configurator()
-doc = InvoiceTexDoc()
+document = InvoiceTexDoc()
 
 
 class InvoiceCli:
@@ -133,16 +133,35 @@ def add(explicit, report):
     click.echo("Invoice registered.")
 
     if click.confirm("Generate invoice file?"):
-        doc.set_invoice_from(inv)
-        doc.date = date_
+        document.set_invoice_from(inv)
+        document.date = inv.date
 
-        ret = doc.generate()
+        ret = document.generate()
         click.echo()
 
         if ret is False:
             click.echo("Error occurred: could not generate invoice file.")
         else:
             click.echo("Invoice emitted. Locate it at %s" % ret)
+
+    return
+
+
+@click.command()
+@click.argument('id_', type=int, required=True)
+def doc(id_):
+    inv = invoice_repo.find(id_)
+
+    document.set_invoice_from(inv)
+    document.date = inv.emitted_at
+
+    ret = document.generate()
+    click.echo()
+
+    if ret is False:
+        click.echo("Error occurred: could not generate invoice file.")
+    else:
+        click.echo("Invoice emitted. Locate it at %s" % ret)
 
     return
 
@@ -185,3 +204,4 @@ invoice.add_command(show)
 invoice.add_command(add)
 invoice.add_command(remove)
 invoice.add_command(edit)
+invoice.add_command(doc)

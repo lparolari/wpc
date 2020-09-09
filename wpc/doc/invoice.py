@@ -3,6 +3,7 @@ from pathlib import Path
 
 from num2words import num2words
 from wpc.doc import DocTex
+from wpc.config.config import configurator
 
 
 class InvoiceTexDoc(DocTex):
@@ -69,7 +70,8 @@ class InvoiceTexDoc(DocTex):
     }
 
     def template(self):
-        return os.path.join(os.getcwd(), 'res', 'templates', 'tex', 'default', 'invoice', 'invoice.tex')
+        return os.path.join(configurator.data_path, 'res', 'templates', 'tex', 'default', 'invoice', 'invoice.tex')
+        # return os.path.join(os.getcwd(), 'res', 'templates', 'tex', 'default', 'invoice', 'invoice.tex')
 
     @property
     def file_path(self):

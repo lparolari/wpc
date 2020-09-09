@@ -44,7 +44,7 @@ class RegistryTexDoc(DocTex):
         return 'report_' + self.date_file
 
     def template(self):
-        return os.path.join(os.getcwd(), 'res', 'templates', 'tex', 'default', 'registry', 'registry.tex')
+        return os.path.join(os.getcwd(), '.wpc', 'res', 'templates', 'tex', 'default', 'registry', 'registry.tex')
 
     def replace(self, file_data):
         # doc

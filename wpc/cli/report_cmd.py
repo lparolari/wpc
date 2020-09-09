@@ -133,7 +133,7 @@ def add(explicit):
             str(hours_p),
             str(hours_np),
         ]],
-        ['Form', 'To', 'Tot. Hours', 'Gross', 'Tax', 'Net', 'P. Hours', 'Non P. Hours']))
+        ['Form', 'To', 'Gross', 'Tax', 'Net', 'Tot. Hours', 'P. Hours', 'Non P. Hours']))
 
     click.echo()
 

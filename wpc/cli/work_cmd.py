@@ -89,8 +89,8 @@ def show(day, month, year, all_):
         click.echo("ValueError: " + str(e), err=True)
         return
 
-    headers = ['Client', 'Date', 'Begin', 'End', 'Hours', 'Registry']
-    rows = [[w.client.name if w.client_id is not None else '', w.date_str, w.from_dt_str, w.to_dt_str, w.hours, w.registry] for w in works]
+    headers = ['Client', 'Date', 'Begin', 'End', 'Hours', 'Prod.', 'Registry']
+    rows = [[w.client.name if w.client_id is not None else '', w.date_str, w.from_dt_str, w.to_dt_str, w.hours, 'yes' if w.prod else 'no', w.registry] for w in works]
 
     click.echo(tabulate(rows, headers))
 
